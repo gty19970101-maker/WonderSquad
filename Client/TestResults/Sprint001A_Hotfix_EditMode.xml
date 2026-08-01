@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="3" result="Passed" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.3956454">
+  <test-suite type="TestSuite" id="1000" name="Wonder Squad" fullname="Wonder Squad" runstate="Runnable" testcasecount="20" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.395645" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1037" name="WonderSquad.Tests.EditMode.dll" fullname="H:/gty/game/WonderSquad/Sprint001A_Hotfix_TestProject/Library/ScriptAssemblies/WonderSquad.Tests.EditMode.dll" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.384817" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="22996" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1038" name="WonderSquad" fullname="WonderSquad" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.384021" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1039" name="Tests" fullname="WonderSquad.Tests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.383690" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1040" name="EditMode" fullname="WonderSquad.Tests.EditMode" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.383373" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1027" name="PlayerSpawnConfigurationTests" fullname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests" classname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.381516" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1028" name="PlayerPrefab_IsAValidPrefabAsset" fullname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests.PlayerPrefab_IsAValidPrefabAsset" methodname="PlayerPrefab_IsAValidPrefabAsset" classname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests" runstate="Runnable" seed="2118014285" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:54Z" duration="0.018929" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1029" name="PlayerSandbox_HasValidSpawnConfiguration" fullname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests.PlayerSandbox_HasValidSpawnConfiguration" methodname="PlayerSandbox_HasValidSpawnConfiguration" classname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests" runstate="Runnable" seed="1514125560" result="Passed" start-time="2026-08-01 10:53:54Z" end-time="2026-08-01 10:53:55Z" duration="0.344305" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1030" name="ShouldSpawnOnStart_HasLegacySerializationMigration" fullname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests.ShouldSpawnOnStart_HasLegacySerializationMigration" methodname="ShouldSpawnOnStart_HasLegacySerializationMigration" classname="WonderSquad.Tests.EditMode.PlayerSpawnConfigurationTests" runstate="Runnable" seed="2099890912" result="Passed" start-time="2026-08-01 10:53:55Z" end-time="2026-08-01 10:53:55Z" duration="0.001027" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/ZhuanZ/AppData/LocalLow/Wonder Squad/Wonder Squad\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

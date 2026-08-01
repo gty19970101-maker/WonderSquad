@@ -11,7 +11,7 @@ namespace WonderSquad.Tests.PlayMode
     public sealed class PlayerSpawnerPlayModeTests
     {
         [UnityTest]
-        public IEnumerator PlayerSandbox_WhenLoaded_SpawnsOnePlayer()
+        public IEnumerator Start_WhenShouldSpawnOnStartIsTrue_SpawnsOnePlayer()
         {
             yield return LoadPlayerSandbox();
             yield return null;
@@ -29,19 +29,50 @@ namespace WonderSquad.Tests.PlayMode
         }
 
         [UnityTest]
-        public IEnumerator TrySpawn_WhenPlayerExists_DoesNotSpawnDuplicate()
+        public IEnumerator StartThenRepeatedTrySpawn_DoesNotSpawnDuplicate()
         {
             yield return LoadPlayerSandbox();
             yield return null;
 
             var spawner = FindSpawner();
             var firstPlayer = spawner.SpawnedPlayer;
-            var didSpawn = spawner.TrySpawn(out var returnedPlayer);
+            var didSpawnFirst = spawner.TrySpawn(out var firstReturnedPlayer);
+            var didSpawnSecond = spawner.TrySpawn(out var secondReturnedPlayer);
 
-            Assert.That(didSpawn, Is.False);
-            Assert.That(returnedPlayer, Is.SameAs(firstPlayer));
+            Assert.That(didSpawnFirst, Is.False);
+            Assert.That(didSpawnSecond, Is.False);
+            Assert.That(firstReturnedPlayer, Is.SameAs(firstPlayer));
+            Assert.That(secondReturnedPlayer, Is.SameAs(firstPlayer));
             Assert.That(spawner.SpawnedPlayer, Is.SameAs(firstPlayer));
             Assert.That(CountSpawnedPlayerRoots(spawner), Is.EqualTo(1));
+        }
+
+        [UnityTest]
+        public IEnumerator Start_WhenShouldSpawnOnStartIsFalse_DoesNotSpawn()
+        {
+            yield return LoadPlayerSandbox();
+
+            var playerTemplate = new GameObject("DisabledAutoSpawnTemplate");
+            var spawnPointObject = new GameObject("DisabledAutoSpawnPoint");
+            var spawnPoint =
+                spawnPointObject.AddComponent<PlayerSpawnPoint>();
+            var spawnerObject = new GameObject("DisabledAutoSpawner");
+            spawnerObject.SetActive(false);
+            var spawner = spawnerObject.AddComponent<PlayerSpawner>();
+            spawner.Configure(playerTemplate, spawnPoint);
+            JsonUtility.FromJsonOverwrite(
+                "{\"shouldSpawnOnStart\":false}",
+                spawner);
+
+            spawnerObject.SetActive(true);
+            yield return null;
+
+            Assert.That(spawner.SpawnedPlayer, Is.Null);
+
+            Object.Destroy(playerTemplate);
+            Object.Destroy(spawnPointObject);
+            Object.Destroy(spawnerObject);
+            yield return null;
         }
 
         [UnityTest]

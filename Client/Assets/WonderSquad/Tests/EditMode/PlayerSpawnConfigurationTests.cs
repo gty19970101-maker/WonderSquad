@@ -1,8 +1,10 @@
+using System.Reflection;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using WonderSquad.Core.Configuration;
 using WonderSquad.Player.Spawning;
 
@@ -58,6 +60,31 @@ namespace WonderSquad.Tests.EditMode
                     NewSceneSetup.EmptyScene,
                     NewSceneMode.Single);
             }
+        }
+
+        [Test]
+        public void ShouldSpawnOnStart_HasLegacySerializationMigration()
+        {
+            var currentField = typeof(PlayerSpawner).GetField(
+                "shouldSpawnOnStart",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            var legacyField = typeof(PlayerSpawner).GetField(
+                "spawnOnStart",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+            Assert.That(currentField, Is.Not.Null);
+            Assert.That(legacyField, Is.Null);
+            Assert.That(
+                currentField.IsDefined(typeof(SerializeField), false),
+                Is.True);
+
+            var migrationAttribute =
+                currentField.GetCustomAttribute<FormerlySerializedAsAttribute>();
+
+            Assert.That(migrationAttribute, Is.Not.Null);
+            Assert.That(
+                migrationAttribute.oldName,
+                Is.EqualTo("spawnOnStart"));
         }
     }
 }

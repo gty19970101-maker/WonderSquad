@@ -13,6 +13,14 @@
 - PlayerSandbox 启动时生成单个本地 Player，并支持销毁后重新生成。
 - Player Spawn 的 EditMode 配置测试、PlayMode 行为测试与 P0 回归验证。
 
+### Changed
+
+- Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
+
+### Fixed
+
+- 使用 `FormerlySerializedAs("spawnOnStart")` 将 `PlayerSpawner` 的序列化布尔字段安全迁移为 `shouldSpawnOnStart`，保留原默认值、运行逻辑及 Unity 资产中的序列化值，并关闭 Sprint001 Gate 命名门禁项。
+
 ## [v0.1-P0] - 2026-08-01
 
 ### Added

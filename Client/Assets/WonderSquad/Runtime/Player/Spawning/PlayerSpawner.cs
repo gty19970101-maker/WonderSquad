@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace WonderSquad.Player.Spawning
 {
@@ -16,9 +17,10 @@ namespace WonderSquad.Player.Spawning
         [Tooltip("Transform marker used for the local player spawn pose.")]
         private PlayerSpawnPoint spawnPoint;
 
+        [FormerlySerializedAs("spawnOnStart")]
         [SerializeField]
         [Tooltip("Creates the local player when the Sandbox starts.")]
-        private bool spawnOnStart = true;
+        private bool shouldSpawnOnStart = true;
 
         private GameObject spawnedPlayer;
 
@@ -34,7 +36,7 @@ namespace WonderSquad.Player.Spawning
 
         private void Start()
         {
-            if (!spawnOnStart)
+            if (!shouldSpawnOnStart)
             {
                 return;
             }

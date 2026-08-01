@@ -17,7 +17,7 @@ Sprint001-A 实现 PlayerSandbox 使用的最小本地玩家生成闭环：
 
 状态：
 
-**完成**
+**PASSED**
 
 Unity 版本：
 
@@ -134,7 +134,7 @@ SpawnPoint
 
 - `PlayerSpawner.playerPrefab` 指向 `Player.prefab`。
 - `PlayerSpawner.spawnPoint` 指向同一对象上的 `PlayerSpawnPoint`。
-- `spawnOnStart` 为启用状态。
+- `shouldSpawnOnStart` 为启用状态；旧键 `spawnOnStart` 通过 `FormerlySerializedAs` 保持序列化兼容。
 
 原始结构保护：
 
@@ -249,6 +249,30 @@ Client/TestResults/Sprint001A_AllPlayMode.xml
 
 完整回归包含已有 P0 Bootstrap、场景、配置、日志、输入与 P0ProjectSetup 测试。
 
+### 6.4 Unity 人工实测
+
+验证环境：
+
+```text
+Unity 6000.3.21f1
+Scene: PlayerSandbox
+```
+
+用户完成的 Unity 实测结果：
+
+| 验证项 | 结果 |
+|---|---|
+| PlayerSandbox 可以正常运行 | 通过 |
+| 玩家胶囊体成功生成 | 通过 |
+| 出生位置正确 | 通过 |
+| Console Error | 0 |
+| EditMode Tests | 全部通过 |
+| PlayMode Tests | 全部通过 |
+| 重复生成玩家 | 未发现 |
+| NullReferenceException | 未发现 |
+
+该人工验证补足了自动测试之外的场景可运行性、可见表现、Console 状态和实际出生位置验证。
+
 ---
 
 ## 7. 文件清单
@@ -325,7 +349,120 @@ CHANGELOG.md
 - 不依赖 PlayerController：通过。
 - 未引入禁止系统：通过。
 - Unity 编译和完整测试：通过。
+- Unity PlayerSandbox 人工实测：通过。
+- Console Error 为 0：通过。
+- 未发现 NullReferenceException：通过。
 
-**Sprint001-A Player Spawn 已完成。**
+**Sprint001-A Player Spawn：PASSED。**
 
-本次工作到此停止，不开始 Movement。
+### Sprint001-A Hotfix 收尾
+
+- 已将序列化布尔字段由 `spawnOnStart` 安全迁移为 `shouldSpawnOnStart`。
+- 保留原默认值 `true` 和原自动生成逻辑。
+- 使用 `[FormerlySerializedAs("spawnOnStart")]` 兼容尚未重新保存的 Unity 资产。
+- PlayerSandbox 中的序列化启用值保持为 `1`，对象层级、Prefab 引用和 SpawnPoint 引用未改变。
+- 新增迁移属性 EditMode 验证，并补充自动生成启用、禁用及重复初始化 PlayMode 覆盖。
+- Sprint001 Gate 的 G-01 已关闭，最终结论为 `GO`。
+- 详细证据见 `Docs/01_Project/Sprint001A_Hotfix_Report.md`。
+
+---
+
+## 11. 范围审计
+
+审计边界：
+
+```text
+Commit: 690e01c feat(player): implement sprint001A player spawn
+```
+
+审计结果：
+
+| 范围 | 结果 | 说明 |
+|---|---|---|
+| Player Prefab | 合规 | 只有根节点、VisualRoot 和胶囊占位表现 |
+| PlayerSpawnPoint | 合规 | 只提供出生位置与旋转 |
+| PlayerSpawner | 合规 | 只负责一个本地 Sandbox Player 的生成与引用 |
+| PlayerSandbox | 合规 | 只给原有 SpawnPoint 增加两个组件，层级与原始对象保持不变 |
+| Runtime 依赖 | 合规 | Player 程序集仍只引用 Core |
+| 测试 | 合规 | 只验证 Prefab、配置、生成、去重和删除后重生 |
+| Movement | 未引入 | 没有 PlayerController 或 CharacterController |
+| Input | 未引入 | 没有 PlayerInputHandler 或运行时输入读取 |
+| Camera | 未引入 | 没有 CameraFollow 或 Player Camera Rig |
+| Animation | 未引入 | 没有 Animator 或动画状态 |
+| 其他 Gameplay | 未引入 | 没有 Interaction、Inventory、Ability 或 Puzzle |
+| Network | 未引入 | 没有 Fusion、NetworkObject 或网络生成逻辑 |
+
+结论：
+
+**Sprint001-A 修改严格限制在 Player Spawn 范围内。**
+
+---
+
+## 12. Sprint001-B 实施前检查清单
+
+Sprint001-B 开始前必须逐项确认。
+
+### 12.1 Git 与工作区
+
+- [ ] 当前分支与计划的 Sprint001-B 分支名称一致。
+- [ ] Sprint001-A 的 `PASSED` 报告和 CHANGELOG 已提交。
+- [ ] 工作区无未说明修改或临时 Unity 资源。
+- [ ] 当前分支已包含最新、经过验证的 `develop`。
+- [ ] 明确 Sprint001-B 的提交与 Review 边界。
+
+### 12.2 Unity 基线
+
+- [ ] 使用 Unity `6000.3.21f1`。
+- [ ] 项目打开后无编译错误。
+- [ ] Console 没有未说明 Error。
+- [ ] Sprint001-A EditMode、PlayMode 与 P0 回归仍通过。
+- [ ] PlayerSandbox 仍能生成且只生成一个 Player。
+
+### 12.3 Sprint001-B 范围冻结
+
+- [ ] 在实施前写明 Sprint001-B 的唯一目标。
+- [ ] 明确 Sprint001-B 是否仅包含 CharacterController 与 Movement 基础。
+- [ ] 明确 Walking、Rotation、Gravity、Ground Check 中哪些属于本阶段验收。
+- [ ] Running 若只做预留，必须明确“预留”的具体形式，不提前加入未批准输入行为。
+- [ ] 明确 Input、Camera、Animation、Interaction、Inventory、Ability、Puzzle 和 Network 是否全部继续排除。
+- [ ] 如果范围尚未冻结，结论必须为 NO-GO，不得开始代码。
+
+### 12.4 Player Prefab 与职责边界
+
+- [ ] CharacterController 如获批准，只添加在 Player 根节点。
+- [ ] 不让 PlayerSpawner 依赖 PlayerController。
+- [ ] 不改变 PlayerSpawner 的本地 Sandbox 职责。
+- [ ] 保留 `VisualRoot`，Movement 不直接控制视觉子对象层级。
+- [ ] 不在 Player Prefab 中提前加入 Input、Camera、Animator 或 Network 组件。
+- [ ] Player 删除后重新生成仍能得到完整且有效的 Prefab 实例。
+
+### 12.5 配置与代码规范
+
+- [ ] 所有可调移动参数进入获批准的 `MovementSettings` ScriptableObject。
+- [ ] 不在 PlayerController、GroundDetector 或场景中散落 Magic Number。
+- [ ] Runtime Player 继续只依赖架构允许的程序集。
+- [ ] 不新增 Editor、UI、Interaction 或 Network 的 Runtime 反向引用。
+- [ ] 类型与 Namespace 符合 `CODE_STYLE.md`。
+- [ ] PlayerController 保持单一职责，不承担生成、输入、摄像机或网络逻辑。
+
+### 12.6 测试计划
+
+- [ ] EditMode 验证 MovementSettings 的合法范围和默认配置。
+- [ ] PlayMode 验证 Player Prefab 包含且只包含获批准的移动组件。
+- [ ] PlayMode 验证地面上的稳定状态。
+- [ ] PlayMode 验证重力、旋转、Ground Check 等批准行为。
+- [ ] 验证重复生成与删除后重生测试没有退化。
+- [ ] 运行完整 EditMode 与 PlayMode 回归。
+- [ ] 在 PlayerSandbox 手工验证 Console Error 为 0。
+
+### 12.7 Definition of Ready
+
+只有在以下条件全部满足后，Sprint001-B 才是 GO：
+
+1. 范围和非目标已书面冻结。
+2. Git 与 Unity 基线正常。
+3. Sprint001-A 保持 PASSED。
+4. Prefab、程序集和测试方案无架构冲突。
+5. 没有要求 PlayerSpawner 承担 Movement 或 Network 职责。
+
+当前仅提供检查清单，未对 Sprint001-B 作实施授权，也未开始 Sprint001-B 代码。
