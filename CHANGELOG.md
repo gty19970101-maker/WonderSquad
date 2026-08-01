@@ -9,6 +9,9 @@
 ### Added
 
 - 项目治理文档与开发工作流。
+- Sprint001-A 本地 Player Spawn：基础 Player Prefab、PlayerSpawnPoint 与 Sandbox PlayerSpawner。
+- PlayerSandbox 启动时生成单个本地 Player，并支持销毁后重新生成。
+- Player Spawn 的 EditMode 配置测试、PlayMode 行为测试与 P0 回归验证。
 
 ## [v0.1-P0] - 2026-08-01
 

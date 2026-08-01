@@ -3,11 +3,11 @@
   "rootNamespace": "WonderSquad.Tests.PlayMode",
   "references": [
     "WonderSquad.Core",
-    "WonderSquad.Bootstrap"
+    "WonderSquad.Bootstrap",
+    "WonderSquad.Player"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"
   ],
   "autoReferenced": false
 }
-

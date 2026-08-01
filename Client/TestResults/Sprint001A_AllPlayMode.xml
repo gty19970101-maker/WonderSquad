@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="5" result="Passed" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:23Z" duration="1.1622464">
+  <test-suite type="TestSuite" id="1015" name="Wonder Squad" fullname="Wonder Squad" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:23Z" duration="1.162246" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1011" name="WonderSquad.Tests.PlayMode.dll" fullname="H:/gty/game/WonderSquad/Client/Library/ScriptAssemblies/WonderSquad.Tests.PlayMode.dll" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:23Z" duration="1.152819" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="24312" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1012" name="WonderSquad" fullname="WonderSquad" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:23Z" duration="1.152062" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1013" name="Tests" fullname="WonderSquad.Tests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:23Z" duration="1.151788" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1014" name="PlayMode" fullname="WonderSquad.Tests.PlayMode" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:23Z" duration="1.151549" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1004" name="BootstrapSmokeTests" fullname="WonderSquad.Tests.PlayMode.BootstrapSmokeTests" classname="WonderSquad.Tests.PlayMode.BootstrapSmokeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:22Z" duration="0.594774" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1006" name="P0SandboxScenes_CanRunIndependently" fullname="WonderSquad.Tests.PlayMode.BootstrapSmokeTests.P0SandboxScenes_CanRunIndependently" methodname="P0SandboxScenes_CanRunIndependently" classname="WonderSquad.Tests.PlayMode.BootstrapSmokeTests" runstate="Runnable" seed="700571702" result="Passed" start-time="2026-08-01 09:43:21Z" end-time="2026-08-01 09:43:22Z" duration="0.567732" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1005" name="RuntimeInitialization_CreatesOneBootstrapRoot" fullname="WonderSquad.Tests.PlayMode.BootstrapSmokeTests.RuntimeInitialization_CreatesOneBootstrapRoot" methodname="RuntimeInitialization_CreatesOneBootstrapRoot" classname="WonderSquad.Tests.PlayMode.BootstrapSmokeTests" runstate="Runnable" seed="1316981320" result="Passed" start-time="2026-08-01 09:43:22Z" end-time="2026-08-01 09:43:22Z" duration="0.010957" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="1007" name="PlayerSpawnerPlayModeTests" fullname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests" classname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-01 09:43:22Z" end-time="2026-08-01 09:43:23Z" duration="0.555110" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1008" name="PlayerSandbox_WhenLoaded_SpawnsOnePlayer" fullname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests.PlayerSandbox_WhenLoaded_SpawnsOnePlayer" methodname="PlayerSandbox_WhenLoaded_SpawnsOnePlayer" classname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests" runstate="Runnable" seed="229301343" result="Passed" start-time="2026-08-01 09:43:22Z" end-time="2026-08-01 09:43:22Z" duration="0.189054" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1010" name="TrySpawn_AfterPlayerIsDestroyed_SpawnsReplacement" fullname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests.TrySpawn_AfterPlayerIsDestroyed_SpawnsReplacement" methodname="TrySpawn_AfterPlayerIsDestroyed_SpawnsReplacement" classname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests" runstate="Runnable" seed="1592466334" result="Passed" start-time="2026-08-01 09:43:22Z" end-time="2026-08-01 09:43:22Z" duration="0.180615" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1009" name="TrySpawn_WhenPlayerExists_DoesNotSpawnDuplicate" fullname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests.TrySpawn_WhenPlayerExists_DoesNotSpawnDuplicate" methodname="TrySpawn_WhenPlayerExists_DoesNotSpawnDuplicate" classname="WonderSquad.Tests.PlayMode.PlayerSpawnerPlayModeTests" runstate="Runnable" seed="863708199" result="Passed" start-time="2026-08-01 09:43:22Z" end-time="2026-08-01 09:43:23Z" duration="0.184003" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Saving results to: C:/Users/ZhuanZ/AppData/LocalLow/Wonder Squad/Wonder Squad\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

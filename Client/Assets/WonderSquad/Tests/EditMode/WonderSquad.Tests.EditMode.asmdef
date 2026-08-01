@@ -4,6 +4,7 @@
   "references": [
     "WonderSquad.Core",
     "WonderSquad.Editor",
+    "WonderSquad.Player",
     "Unity.InputSystem"
   ],
   "includePlatforms": [

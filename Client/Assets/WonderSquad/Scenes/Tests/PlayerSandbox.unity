@@ -647,6 +647,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920824784}
+  - component: {fileID: 920824786}
+  - component: {fileID: 920824785}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: Untagged
@@ -669,6 +671,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1134787781}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &920824785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920824783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f755996c9a76409fba8a1ae41268db87, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: WonderSquad.Player::WonderSquad.Player.Spawning.PlayerSpawner
+  playerPrefab: {fileID: 4942354189374266716, guid: 76a57e1d48f849a46bee0867d87135b8, type: 3}
+  spawnPoint: {fileID: 920824786}
+  spawnOnStart: 1
+--- !u!114 &920824786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920824783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5217658f3f654908bb539d849b62cf4b, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: WonderSquad.Player::WonderSquad.Player.Spawning.PlayerSpawnPoint
 --- !u!1 &1007946189
 GameObject:
   m_ObjectHideFlags: 0
