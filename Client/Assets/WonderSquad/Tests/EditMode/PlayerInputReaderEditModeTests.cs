@@ -62,7 +62,9 @@ namespace WonderSquad.Tests.EditMode
         [Test]
         public void TryValidateMoveAction_WhenActionContractIsInvalid_ReturnsFalse()
         {
-            using var action = new InputAction(
+            var actionAsset = ScriptableObject.CreateInstance<InputActionAsset>();
+            var actionMap = actionAsset.AddActionMap("Test");
+            var action = actionMap.AddAction(
                 "InvalidMove",
                 InputActionType.Button,
                 "<Keyboard>/space");
@@ -81,6 +83,7 @@ namespace WonderSquad.Tests.EditMode
             finally
             {
                 Object.DestroyImmediate(actionReference);
+                Object.DestroyImmediate(actionAsset);
             }
         }
 
@@ -89,31 +92,38 @@ namespace WonderSquad.Tests.EditMode
         {
             var moveActionReference = LoadMoveActionReference();
 
-            Assert.That(
-                PlayerInputConfigurationValidator.TryValidateMoveAction(
-                    moveActionReference,
-                    out var error),
-                Is.True,
-                error);
+            try
+            {
+                Assert.That(
+                    PlayerInputConfigurationValidator.TryValidateMoveAction(
+                        moveActionReference,
+                        out var error),
+                    Is.True,
+                    error);
 
-            var bindingPaths = moveActionReference.action.bindings
-                .Where(binding => !binding.isComposite)
-                .Select(binding => binding.path)
-                .ToArray();
+                var bindingPaths = moveActionReference.action.bindings
+                    .Where(binding => !binding.isComposite)
+                    .Select(binding => binding.path)
+                    .ToArray();
 
-            Assert.That(
-                bindingPaths,
-                Is.SupersetOf(new[]
-                {
-                    "<Keyboard>/w",
-                    "<Keyboard>/a",
-                    "<Keyboard>/s",
-                    "<Keyboard>/d",
-                    "<Keyboard>/upArrow",
-                    "<Keyboard>/downArrow",
-                    "<Keyboard>/leftArrow",
-                    "<Keyboard>/rightArrow"
-                }));
+                Assert.That(
+                    bindingPaths,
+                    Is.SupersetOf(new[]
+                    {
+                        "<Keyboard>/w",
+                        "<Keyboard>/a",
+                        "<Keyboard>/s",
+                        "<Keyboard>/d",
+                        "<Keyboard>/upArrow",
+                        "<Keyboard>/downArrow",
+                        "<Keyboard>/leftArrow",
+                        "<Keyboard>/rightArrow"
+                    }));
+            }
+            finally
+            {
+                Object.DestroyImmediate(moveActionReference);
+            }
         }
 
         [Test]
@@ -134,14 +144,14 @@ namespace WonderSquad.Tests.EditMode
 
         private static InputActionReference LoadMoveActionReference()
         {
-            var moveActionReference = AssetDatabase
-                .LoadAllAssetsAtPath(ProjectConstants.InputActionsAssetPath)
-                .OfType<InputActionReference>()
-                .SingleOrDefault(reference =>
-                    reference.action.name == InputActionNames.Move);
+            var actionAsset =
+                AssetDatabase.LoadAssetAtPath<InputActionAsset>(
+                    ProjectConstants.InputActionsAssetPath);
 
-            Assert.That(moveActionReference, Is.Not.Null);
-            return moveActionReference;
+            Assert.That(actionAsset, Is.Not.Null);
+            var moveAction =
+                actionAsset.FindAction(InputActionNames.Move, true);
+            return InputActionReference.Create(moveAction);
         }
     }
 }

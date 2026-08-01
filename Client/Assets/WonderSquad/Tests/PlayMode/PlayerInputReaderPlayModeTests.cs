@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using WonderSquad.Core.Configuration;
 using WonderSquad.Player.Input;
+using WonderSquad.Player.Movement;
 using WonderSquad.Player.Spawning;
 
 namespace WonderSquad.Tests.PlayMode
@@ -21,6 +22,9 @@ namespace WonderSquad.Tests.PlayMode
 
             var spawner = FindSpawner();
             var reader = spawner.SpawnedPlayer.GetComponent<PlayerInputReader>();
+            var movement = spawner.SpawnedPlayer.GetComponent<PlayerMovement>();
+            Assert.That(movement, Is.Not.Null);
+            movement.enabled = false;
             var initialPosition = spawner.SpawnedPlayer.transform.position;
 
             Press(keyboard.wKey);

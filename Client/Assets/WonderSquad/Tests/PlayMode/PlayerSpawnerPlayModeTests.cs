@@ -10,6 +10,8 @@ namespace WonderSquad.Tests.PlayMode
 {
     public sealed class PlayerSpawnerPlayModeTests
     {
+        private const float SpawnPoseTolerance = 0.001f;
+
         [UnityTest]
         public IEnumerator Start_WhenShouldSpawnOnStartIsTrue_SpawnsOnePlayer()
         {
@@ -21,8 +23,10 @@ namespace WonderSquad.Tests.PlayMode
             Assert.That(spawner.SpawnedPlayer, Is.Not.Null);
             Assert.That(CountSpawnedPlayerRoots(spawner), Is.EqualTo(1));
             Assert.That(
-                spawner.SpawnedPlayer.transform.position,
-                Is.EqualTo(spawner.SpawnPoint.Position));
+                Vector3.Distance(
+                    spawner.SpawnedPlayer.transform.position,
+                    spawner.SpawnPoint.Position),
+                Is.LessThanOrEqualTo(SpawnPoseTolerance));
             Assert.That(
                 spawner.SpawnedPlayer.transform.rotation,
                 Is.EqualTo(spawner.SpawnPoint.Rotation));

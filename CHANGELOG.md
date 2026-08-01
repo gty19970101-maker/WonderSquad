@@ -14,10 +14,13 @@
 - Player Spawn 的 EditMode 配置测试、PlayMode 行为测试与 P0 回归验证。
 - Sprint001-B Player Input Reader：复用 New Input System 的 Gameplay/Move Action，支持 WASD、方向键、输入限幅和启停生命周期。
 - PlayerSandbox 的输入变化调试日志，以及输入配置、限幅、生命周期、重复订阅和 Player 静止状态测试。
+- Sprint001-C Character Controller Movement：数据化水平移动、角色朝向、地面状态和重力。
+- Player Prefab 的 CharacterController、GroundDetector、PlayerMovement 与 MovementSettings 配置，以及对应 EditMode、PlayMode 测试。
 
 ### Changed
 
 - Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
+- Sprint001-C Character Controller Movement 已通过 Unity `6000.3.21f1` 最终验收：WASD、停止、转向、斜向限速、重力、接地、禁用与重新启用均正常，Console Error 为 0；EditMode 32/32、PlayMode 13/13 通过。
 
 ### Fixed
 
