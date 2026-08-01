@@ -10,6 +10,12 @@ using WonderSquad.Core.Configuration;
 
 namespace WonderSquad.Editor
 {
+    public enum P0SceneCreationMode
+    {
+        CreateMissingOnly,
+        RebuildExisting
+    }
+
     public static class P0ProjectSetup
     {
         private const string AutomaticSetupSessionKey =
@@ -25,12 +31,15 @@ namespace WonderSquad.Editor
         private const string ProjectGlobalSettingsPath =
             UrpDirectory + "/UniversalRenderPipelineGlobalSettings.asset";
 
-        [MenuItem("Wonder Squad/P0/Apply Final Project Setup")]
+        public static P0SceneCreationMode AutomaticSceneCreationMode =>
+            P0SceneCreationMode.CreateMissingOnly;
+
+        [MenuItem("Wonder Squad/P0/Apply Project Setup (Safe)")]
         public static void ApplyFromMenu()
         {
             if (!EditorUtility.DisplayDialog(
                     "Apply Wonder Squad P0 Setup",
-                    "This rebuilds the four P0 scenes and assigns URP to every quality level.",
+                    "This assigns the P0 project settings and creates only missing scenes. Existing scenes will not be changed.",
                     "Apply",
                     "Cancel"))
             {
@@ -38,6 +47,21 @@ namespace WonderSquad.Editor
             }
 
             ApplyFinalProjectSetup();
+        }
+
+        [MenuItem("Wonder Squad/P0/Rebuild All P0 Scenes...")]
+        public static void RebuildScenesFromMenu()
+        {
+            if (!EditorUtility.DisplayDialog(
+                    "Rebuild All Wonder Squad P0 Scenes?",
+                    "This destructive operation replaces all four P0 scenes, including PlayerSandbox. Existing scene changes will be lost.",
+                    "Rebuild Scenes",
+                    "Cancel"))
+            {
+                return;
+            }
+
+            ApplyProjectSetup(P0SceneCreationMode.RebuildExisting);
         }
 
         [InitializeOnLoadMethod]
@@ -54,8 +78,7 @@ namespace WonderSquad.Editor
 
         private static void ApplyAutomaticSetupIfRequired()
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode ||
-                GraphicsSettings.defaultRenderPipeline != null)
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 return;
             }
@@ -63,7 +86,7 @@ namespace WonderSquad.Editor
             SessionState.SetBool(AutomaticSetupSessionKey, true);
             try
             {
-                ApplyFinalProjectSetup();
+                ApplyProjectSetup(AutomaticSceneCreationMode);
             }
             catch
             {
@@ -74,21 +97,61 @@ namespace WonderSquad.Editor
 
         public static void ApplyFinalProjectSetup()
         {
+            ApplyProjectSetup(P0SceneCreationMode.CreateMissingOnly);
+        }
+
+        public static bool EnsureP0SceneExists(
+            string scenePath,
+            string rootName)
+        {
+            if (string.IsNullOrWhiteSpace(scenePath))
+            {
+                throw new ArgumentException(
+                    "A scene asset path is required.",
+                    nameof(scenePath));
+            }
+
+            if (string.IsNullOrWhiteSpace(rootName))
+            {
+                throw new ArgumentException(
+                    "A scene root name is required.",
+                    nameof(rootName));
+            }
+
+            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath) != null ||
+                File.Exists(Path.GetFullPath(scenePath)))
+            {
+                Debug.Log(
+                    $"[WonderSquad] P0 scene already exists; skipped without changes: {scenePath}");
+                return false;
+            }
+
+            BuildP0Scene(scenePath, rootName);
+            Debug.Log($"[WonderSquad] Created missing P0 scene: {scenePath}");
+            return true;
+        }
+
+        private static void ApplyProjectSetup(P0SceneCreationMode sceneMode)
+        {
             var pipelineAsset = EnsureUrpAssets();
             AssignUrp(pipelineAsset);
 
-            BuildP0Scene(
+            ConfigureP0Scene(
                 ProjectConstants.BootstrapScenePath,
-                "P0_BootstrapScene");
-            BuildP0Scene(
+                "P0_BootstrapScene",
+                sceneMode);
+            ConfigureP0Scene(
                 ProjectConstants.PlayerSandboxScenePath,
-                "P0_PlayerSandbox_NoGameplay");
-            BuildP0Scene(
+                "P0_PlayerSandbox_NoGameplay",
+                sceneMode);
+            ConfigureP0Scene(
                 ProjectConstants.GameplaySandboxScenePath,
-                "P0_GameplaySandbox_NoGameplay");
-            BuildP0Scene(
+                "P0_GameplaySandbox_NoGameplay",
+                sceneMode);
+            ConfigureP0Scene(
                 ProjectConstants.RecoverySandboxScenePath,
-                "P0_RecoverySandbox_NoGameplay");
+                "P0_RecoverySandbox_NoGameplay",
+                sceneMode);
 
             EditorBuildSettings.scenes = new[]
             {
@@ -107,7 +170,23 @@ namespace WonderSquad.Editor
                 throw new InvalidOperationException(string.Join("\n", errors));
             }
 
-            Debug.Log("[WonderSquad] P0 final project setup completed.");
+            Debug.Log(
+                $"[WonderSquad] P0 project setup completed with scene mode: {sceneMode}.");
+        }
+
+        private static void ConfigureP0Scene(
+            string scenePath,
+            string rootName,
+            P0SceneCreationMode sceneMode)
+        {
+            if (sceneMode == P0SceneCreationMode.RebuildExisting)
+            {
+                BuildP0Scene(scenePath, rootName);
+                Debug.Log($"[WonderSquad] Explicitly rebuilt P0 scene: {scenePath}");
+                return;
+            }
+
+            EnsureP0SceneExists(scenePath, rootName);
         }
 
         private static UniversalRenderPipelineAsset EnsureUrpAssets()
@@ -168,7 +247,7 @@ namespace WonderSquad.Editor
         {
             var scene = EditorSceneManager.NewScene(
                 NewSceneSetup.EmptyScene,
-                NewSceneMode.Single);
+                NewSceneMode.Additive);
 
             var root = new GameObject(rootName);
 
@@ -226,7 +305,16 @@ namespace WonderSquad.Editor
             debugCanvas.GetComponent<Canvas>().renderMode =
                 RenderMode.ScreenSpaceOverlay;
 
-            EditorSceneManager.SaveScene(scene, scenePath);
+            if (!EditorSceneManager.SaveScene(scene, scenePath))
+            {
+                throw new IOException($"Failed to save P0 scene: {scenePath}");
+            }
+
+            if (!EditorSceneManager.CloseScene(scene, true))
+            {
+                throw new InvalidOperationException(
+                    $"Failed to close generated P0 scene: {scenePath}");
+            }
         }
 
         private static GameObject CreateEmpty(string name, Transform parent)

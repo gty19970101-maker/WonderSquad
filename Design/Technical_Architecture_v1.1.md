@@ -40,7 +40,7 @@
 
 | 项目 | v1.1 MVP 建议 |
 |---|---|
-| Unity | Unity 6.3 LTS，统一锁定最新稳定补丁 |
+| Unity | Unity `6000.3.21f1`（Unity 6.3 LTS），项目唯一正式版本基线 |
 | 项目模板 | Universal 3D |
 | 画面形态 | 3D 场景与物理、受控摄像机的 2.5D 卡通表现 |
 | 渲染管线 | URP |
@@ -63,7 +63,8 @@
 
 版本管理规则：
 
-- Unity、Fusion 和其他关键包写入清单并锁定。
+- Unity Editor 精确锁定为 `6000.3.21f1`；`ProjectVersion.txt`、治理文档与验证报告必须保持一致。
+- Fusion 和其他关键包写入清单并锁定。
 - MVP 期间不主动升级大版本。
 - 补丁升级先在独立分支完成构建、联机和完整关卡回归。
 - 语音 SDK 如果接入，也必须通过适配层隔离和锁定版本。
@@ -1393,7 +1394,7 @@ Bootstrap
 
 ### 检查点一：初始化
 
-- Unity 6.3 LTS、URP 和 Fusion 版本锁定。
+- Unity `6000.3.21f1`（Unity 6.3 LTS）、URP 和 Fusion 版本锁定。
 - 双实例连接。
 - 内容 ID 与验证器工作。
 - 已确认语音 SDK 延期到 MVP 之后。
@@ -1430,7 +1431,7 @@ Bootstrap
 
 Wonder Squad v1.1 MVP 采用：
 
-> Unity 6.3 LTS + Universal 3D/URP + 2.5D 表现 + Photon Fusion 2 Host Mode + 主机集中权威 + 数据驱动独立关卡 + 游戏内非语音交流 + 角色能力标签 + 临时状态与救援 + 本地轻量设置 + 无自建后端。
+> Unity `6000.3.21f1`（Unity 6.3 LTS）+ Universal 3D/URP + 2.5D 表现 + Photon Fusion 2 Host Mode + 主机集中权威 + 数据驱动独立关卡 + 游戏内非语音交流 + 角色能力标签 + 临时状态与救援 + 本地轻量设置 + 无自建后端。
 
 语音在 MVP 验证后可通过独立适配器接入，但不得成为玩法依赖。玩家关卡编辑器不进入 MVP；当前只建立未来可使用的稳定、版本化、可校验内容边界。
 
@@ -1477,7 +1478,7 @@ Wonder Squad v1.1 MVP 采用：
 
 ### 保持不变
 
-- Unity 6.3 LTS 建议。
+- Unity `6000.3.21f1`（Unity 6.3 LTS）正式版本基线。
 - Universal 3D + URP 的 2.5D 方向。
 - Photon Fusion 2 Host Mode。
 - 主机集中权威原则。

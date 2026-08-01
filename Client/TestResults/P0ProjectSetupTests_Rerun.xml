@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="4" result="Passed" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.8897446">
+  <test-suite type="TestSuite" id="1000" name="Wonder Squad" fullname="Wonder Squad" runstate="Runnable" testcasecount="17" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.889745" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <test-suite type="Assembly" id="1033" name="WonderSquad.Tests.EditMode.dll" fullname="H:/gty/game/WonderSquad/Client/Library/ScriptAssemblies/WonderSquad.Tests.EditMode.dll" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.881401" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="29948" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <test-suite type="TestSuite" id="1034" name="WonderSquad" fullname="WonderSquad" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.880762" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1035" name="Tests" fullname="WonderSquad.Tests" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.880548" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1036" name="EditMode" fullname="WonderSquad.Tests.EditMode" runstate="Runnable" testcasecount="9" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.880331" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1020" name="P0ProjectSetupTests" fullname="WonderSquad.Tests.EditMode.P0ProjectSetupTests" classname="WonderSquad.Tests.EditMode.P0ProjectSetupTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:20Z" duration="1.878553" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1024" name="AutomaticSetup_UsesCreateMissingOnlyMode" fullname="WonderSquad.Tests.EditMode.P0ProjectSetupTests.AutomaticSetup_UsesCreateMissingOnlyMode" methodname="AutomaticSetup_UsesCreateMissingOnlyMode" classname="WonderSquad.Tests.EditMode.P0ProjectSetupTests" runstate="Runnable" seed="1443993081" result="Passed" start-time="2026-08-01 09:27:18Z" end-time="2026-08-01 09:27:19Z" duration="0.501653" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+              </test-case>
+              <test-case id="1021" name="EnsureP0SceneExists_WhenMissing_CreatesScene" fullname="WonderSquad.Tests.EditMode.P0ProjectSetupTests.EnsureP0SceneExists_WhenMissing_CreatesScene" methodname="EnsureP0SceneExists_WhenMissing_CreatesScene" classname="WonderSquad.Tests.EditMode.P0ProjectSetupTests" runstate="Runnable" seed="789518448" result="Passed" start-time="2026-08-01 09:27:19Z" end-time="2026-08-01 09:27:19Z" duration="0.468934" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[WonderSquad] Created missing P0 scene: Assets/WonderSquad/Tests/EditMode/P0ProjectSetupTestTemp/1ef1ea8b106345a58989fef04d4498dd/TestScene.unity
+]]></output>
+              </test-case>
+              <test-case id="1022" name="EnsureP0SceneExists_WhenPresent_DoesNotOverwriteScene" fullname="WonderSquad.Tests.EditMode.P0ProjectSetupTests.EnsureP0SceneExists_WhenPresent_DoesNotOverwriteScene" methodname="EnsureP0SceneExists_WhenPresent_DoesNotOverwriteScene" classname="WonderSquad.Tests.EditMode.P0ProjectSetupTests" runstate="Runnable" seed="269070823" result="Passed" start-time="2026-08-01 09:27:19Z" end-time="2026-08-01 09:27:20Z" duration="0.467203" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[WonderSquad] P0 scene already exists; skipped without changes: Assets/WonderSquad/Tests/EditMode/P0ProjectSetupTestTemp/47f61898088540f18fcbf454dadfd23c/TestScene.unity
+]]></output>
+              </test-case>
+              <test-case id="1023" name="EnsureP0SceneExists_WhenRepeated_DoesNotChangeExistingScene" fullname="WonderSquad.Tests.EditMode.P0ProjectSetupTests.EnsureP0SceneExists_WhenRepeated_DoesNotChangeExistingScene" methodname="EnsureP0SceneExists_WhenRepeated_DoesNotChangeExistingScene" classname="WonderSquad.Tests.EditMode.P0ProjectSetupTests" runstate="Runnable" seed="1306237393" result="Passed" start-time="2026-08-01 09:27:20Z" end-time="2026-08-01 09:27:20Z" duration="0.423681" asserts="0">
+                <properties>
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[[WonderSquad] Created missing P0 scene: Assets/WonderSquad/Tests/EditMode/P0ProjectSetupTestTemp/e48d318e4a7a4807a7f54ec31e26fb12/TestScene.unity
+[WonderSquad] P0 scene already exists; skipped without changes: Assets/WonderSquad/Tests/EditMode/P0ProjectSetupTestTemp/e48d318e4a7a4807a7f54ec31e26fb12/TestScene.unity
+Saving results to: C:/Users/ZhuanZ/AppData/LocalLow/Wonder Squad/Wonder Squad\TestResults.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

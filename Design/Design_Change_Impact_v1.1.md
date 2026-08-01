@@ -603,7 +603,7 @@ v1.1 对项目的影响是**显著但可控的局部扩展**，不要求推翻�
 
 可以保持不变的部分：
 
-- Unity 6.3 LTS 建议
+- Unity `6000.3.21f1`（Unity 6.3 LTS）正式版本基线
 - Universal 3D + URP 的 2.5D 方向
 - Photon Fusion 2 Host Mode
 - MVP 不建设独立后端

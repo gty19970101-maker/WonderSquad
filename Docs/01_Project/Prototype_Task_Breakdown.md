@@ -81,7 +81,7 @@ Client/Assets/WonderSquad/
 ## P0-001　锁定Unity项目配置与包版本
 
 - **MVP阻塞：** 是
-- **目标：** 用 Unity 6.3 LTS 最新稳定补丁创建 Universal 3D/URP 客户端项目，并锁定 Input System、测试框架和基础包版本；暂不接入 Fusion 与语音 SDK。
+- **目标：** 用项目唯一正式版本 Unity `6000.3.21f1`（Unity 6.3 LTS）创建 Universal 3D/URP 客户端项目，并锁定 Input System、测试框架和基础包版本；暂不接入 Fusion 与语音 SDK。
 - **输入条件：** v1.1 技术架构；本机已安装目标 Unity Editor。
 - **需要创建或修改的文件：** `Client/Packages/manifest.json`、`Client/Packages/packages-lock.json`、`Client/ProjectSettings/ProjectVersion.txt`、`Client/ProjectSettings/GraphicsSettings.asset`、`Client/ProjectSettings/QualitySettings.asset`、`Client/README.md`。
 - **Unity场景配置：** 暂不创建业务场景；确认默认 URP Renderer 和测试用质量档位。

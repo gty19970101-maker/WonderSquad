@@ -6,6 +6,8 @@
 
 适用于个人开发和 2～3 人小团队。
 
+项目唯一正式 Unity Editor 版本基线为 **Unity `6000.3.21f1`（Unity 6.3 LTS）**。Implementation、Unity Test、Code Review 和构建必须使用该精确版本；版本变更必须作为独立迁移任务执行影响分析与 P0 回归，不得在功能 Sprint 中顺带升级或降级。
+
 ## 2. 总流程
 
 ```text

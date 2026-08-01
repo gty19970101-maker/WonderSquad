@@ -28,7 +28,7 @@ MVP 的技术架构只服务于一个目标：
 
 | 项目 | MVP 建议 |
 |---|---|
-| Unity 版本 | Unity 6.3 LTS，锁定团队统一的最新补丁版本 |
+| Unity 版本 | Unity `6000.3.21f1`（Unity 6.3 LTS），项目唯一正式版本基线 |
 | 项目模板 | Universal 3D 模板 |
 | 画面形态 | 2.5D：3D 场景与物理、受控视角、卡通化表现 |
 | 渲染管线 | URP |
@@ -49,7 +49,7 @@ MVP 的技术架构只服务于一个目标：
 
 ### 3.1 推荐版本
 
-推荐使用 **Unity 6.3 LTS**，并在项目初始化当天选择 Unity Hub 中可用的最新稳定补丁版本，例如 `6000.3.xf1`。
+项目统一使用 **Unity `6000.3.21f1`（Unity 6.3 LTS）**。不得再根据 Unity Hub 的“最新补丁”自动变化；任何版本变更均作为独立迁移任务处理。
 
 选择理由：
 
@@ -1174,7 +1174,7 @@ MVP 至少定义以下行为：
 
 ### 检查点一：项目初始化结束
 
-- Unity 6.3 LTS 具体补丁已锁定。
+- Unity `6000.3.21f1`（Unity 6.3 LTS）已锁定。
 - Universal 3D + URP 已建立。
 - Fusion 2 Host Mode 能建立最小双人连接。
 
@@ -1213,6 +1213,6 @@ MVP 至少定义以下行为：
 
 Wonder Squad MVP 采用：
 
-> Unity 6.3 LTS + Universal 3D/URP + 2.5D 表现 + Photon Fusion 2 Host Mode + 主机集中权威 + 本地轻量设置存档 + 无自建后端。
+> Unity `6000.3.21f1`（Unity 6.3 LTS）+ Universal 3D/URP + 2.5D 表现 + Photon Fusion 2 Host Mode + 主机集中权威 + 本地轻量设置存档 + 无自建后端。
 
 该组合优先保障 2～4 人实时合作中的状态一致、快速迭代和小团队可执行性。后续只有在 MVP 证明核心玩法好玩之后，才评估独立服务器、正式账号、云存档和长期运营架构。
