@@ -4,7 +4,9 @@
   "references": [
     "WonderSquad.Core",
     "WonderSquad.Bootstrap",
-    "WonderSquad.Player"
+    "WonderSquad.Player",
+    "Unity.InputSystem",
+    "Unity.InputSystem.TestFramework"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

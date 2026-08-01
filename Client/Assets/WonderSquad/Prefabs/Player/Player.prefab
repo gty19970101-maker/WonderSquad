@@ -131,6 +131,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1274168055109296534}
+  - component: {fileID: 610010010010010001}
+  - component: {fileID: 610010010010010002}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -154,3 +156,29 @@ Transform:
   - {fileID: 7661241351443301030}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &610010010010010001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4942354189374266716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1a39891c1a24476ad3a21a6a765ee85, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: WonderSquad.Player::WonderSquad.Player.Input.PlayerInputReader
+  moveActionReference: {fileID: -9168181896911697962, guid: 91b13cd8943aac54c99d2de3ea0d97a0, type: 3}
+--- !u!114 &610010010010010002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4942354189374266716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f033f10f18c24e9aa65c77908d213c22, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: WonderSquad.Player::WonderSquad.Player.Input.PlayerInputDebugLogger
+  inputReader: {fileID: 610010010010010001}

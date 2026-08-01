@@ -12,6 +12,8 @@
 - Sprint001-A 本地 Player Spawn：基础 Player Prefab、PlayerSpawnPoint 与 Sandbox PlayerSpawner。
 - PlayerSandbox 启动时生成单个本地 Player，并支持销毁后重新生成。
 - Player Spawn 的 EditMode 配置测试、PlayMode 行为测试与 P0 回归验证。
+- Sprint001-B Player Input Reader：复用 New Input System 的 Gameplay/Move Action，支持 WASD、方向键、输入限幅和启停生命周期。
+- PlayerSandbox 的输入变化调试日志，以及输入配置、限幅、生命周期、重复订阅和 Player 静止状态测试。
 
 ### Changed
 

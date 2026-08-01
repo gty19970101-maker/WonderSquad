@@ -1,6 +1,9 @@
 {
   "name": "WonderSquad.Player",
   "rootNamespace": "WonderSquad.Player",
-  "references": ["WonderSquad.Core"],
+  "references": [
+    "WonderSquad.Core",
+    "Unity.InputSystem"
+  ],
   "autoReferenced": true
 }
