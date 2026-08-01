@@ -1,0 +1,7 @@
+{
+  "name": "WonderSquad.Inventory",
+  "rootNamespace": "WonderSquad.Inventory",
+  "references": ["WonderSquad.Core", "WonderSquad.Content"],
+  "autoReferenced": true
+}
+

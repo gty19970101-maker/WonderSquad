@@ -1,0 +1,17 @@
+{
+  "name": "WonderSquad.Content",
+  "rootNamespace": "WonderSquad.Content",
+  "references": [
+    "WonderSquad.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
+

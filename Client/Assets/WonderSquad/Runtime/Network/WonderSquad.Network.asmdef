@@ -1,0 +1,7 @@
+{
+  "name": "WonderSquad.Network",
+  "rootNamespace": "WonderSquad.Network",
+  "references": ["WonderSquad.Core"],
+  "autoReferenced": true
+}
+

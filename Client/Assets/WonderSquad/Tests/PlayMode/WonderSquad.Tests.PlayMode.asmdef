@@ -1,0 +1,13 @@
+{
+  "name": "WonderSquad.Tests.PlayMode",
+  "rootNamespace": "WonderSquad.Tests.PlayMode",
+  "references": [
+    "WonderSquad.Core",
+    "WonderSquad.Bootstrap"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}
+

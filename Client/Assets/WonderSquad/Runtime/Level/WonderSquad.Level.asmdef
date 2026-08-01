@@ -1,0 +1,7 @@
+{
+  "name": "WonderSquad.Level",
+  "rootNamespace": "WonderSquad.Level",
+  "references": ["WonderSquad.Core", "WonderSquad.Content"],
+  "autoReferenced": true
+}
+

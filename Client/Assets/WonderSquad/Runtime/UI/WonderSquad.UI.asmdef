@@ -1,0 +1,7 @@
+{
+  "name": "WonderSquad.UI",
+  "rootNamespace": "WonderSquad.UI",
+  "references": ["WonderSquad.Core"],
+  "autoReferenced": true
+}
+

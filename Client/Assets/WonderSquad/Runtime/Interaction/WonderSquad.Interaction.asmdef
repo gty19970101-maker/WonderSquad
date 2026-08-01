@@ -1,0 +1,7 @@
+{
+  "name": "WonderSquad.Interaction",
+  "rootNamespace": "WonderSquad.Interaction",
+  "references": ["WonderSquad.Core"],
+  "autoReferenced": true
+}
+

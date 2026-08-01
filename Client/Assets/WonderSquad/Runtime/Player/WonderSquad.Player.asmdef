@@ -1,0 +1,6 @@
+{
+  "name": "WonderSquad.Player",
+  "rootNamespace": "WonderSquad.Player",
+  "references": ["WonderSquad.Core"],
+  "autoReferenced": true
+}

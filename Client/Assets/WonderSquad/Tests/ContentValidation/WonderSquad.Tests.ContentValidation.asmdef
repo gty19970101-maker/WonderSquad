@@ -1,0 +1,16 @@
+{
+  "name": "WonderSquad.Tests.ContentValidation",
+  "rootNamespace": "WonderSquad.Tests.ContentValidation",
+  "references": [
+    "WonderSquad.Core",
+    "WonderSquad.Content"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}
+

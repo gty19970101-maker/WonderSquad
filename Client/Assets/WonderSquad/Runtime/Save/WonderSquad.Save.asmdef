@@ -1,0 +1,7 @@
+{
+  "name": "WonderSquad.Save",
+  "rootNamespace": "WonderSquad.Save",
+  "references": ["WonderSquad.Core"],
+  "autoReferenced": true
+}
+

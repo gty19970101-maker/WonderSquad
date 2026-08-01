@@ -1,0 +1,16 @@
+{
+  "name": "WonderSquad.Tests.EditMode",
+  "rootNamespace": "WonderSquad.Tests.EditMode",
+  "references": [
+    "WonderSquad.Core",
+    "WonderSquad.Editor",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}
