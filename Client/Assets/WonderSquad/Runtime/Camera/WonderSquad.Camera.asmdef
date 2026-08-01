@@ -1,0 +1,10 @@
+{
+  "name": "WonderSquad.Camera",
+  "rootNamespace": "WonderSquad.Presentation.Camera",
+  "references": [
+    "WonderSquad.Core",
+    "WonderSquad.Player",
+    "Unity.Cinemachine"
+  ],
+  "autoReferenced": true
+}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4746897f8c3a48645b9e6d04f1bb5665, type: 3}
+  m_Name: CameraFollowSettings
+  m_EditorClassIdentifier: WonderSquad.Camera::WonderSquad.Presentation.Camera.CameraFollowSettings
+  targetLocalOffset: {x: 0, y: 1.5, z: 0}
+  followOffset: {x: 0, y: 6.5, z: -9}
+  positionDamping: {x: 0.35, y: 0.5, z: 0.35}
+  fixedEulerAngles: {x: 32, y: 0, z: 0}
+  fieldOfView: 60

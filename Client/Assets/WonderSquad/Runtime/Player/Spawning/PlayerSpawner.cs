@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -23,6 +24,8 @@ namespace WonderSquad.Player.Spawning
         private bool shouldSpawnOnStart = true;
 
         private GameObject spawnedPlayer;
+
+        public event Action<GameObject> PlayerSpawned;
 
         public GameObject PlayerPrefab => playerPrefab;
 
@@ -80,6 +83,7 @@ namespace WonderSquad.Player.Spawning
                 spawnPoint.Position,
                 spawnPoint.Rotation);
             player = spawnedPlayer;
+            PlayerSpawned?.Invoke(spawnedPlayer);
             return true;
         }
     }

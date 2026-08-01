@@ -16,11 +16,14 @@
 - PlayerSandbox 的输入变化调试日志，以及输入配置、限幅、生命周期、重复订阅和 Player 静止状态测试。
 - Sprint001-C Character Controller Movement：数据化水平移动、角色朝向、地面状态和重力。
 - Player Prefab 的 CharacterController、GroundDetector、PlayerMovement 与 MovementSettings 配置，以及对应 EditMode、PlayMode 测试。
+- Sprint001-D Controlled Third-Person Camera：基于 Cinemachine `3.1.7` 的固定斜俯视跟随、独立 Camera Target、运行时本地玩家绑定和数据化相机参数。
+- PlayerSandbox 的 Camera Rig、CameraValidationRoot，以及玩家生成、销毁、重新生成、跟随稳定性、固定朝向和单相机约束测试。
 
 ### Changed
 
 - Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
 - Sprint001-C Character Controller Movement 已通过 Unity `6000.3.21f1` 最终验收：WASD、停止、转向、斜向限速、重力、接地、禁用与重新启用均正常，Console Error 为 0；EditMode 32/32、PlayMode 13/13 通过。
+- Sprint001-D Controlled Third-Person Camera 已通过 Unity `6000.3.21f1` 最终验收：EditMode 37/37、PlayMode 19/19 通过；WASD 跟随、固定斜俯视、停止稳定性、墙体、门洞、高低差、Canopy 与单 Main Camera 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
 
 ### Fixed
 

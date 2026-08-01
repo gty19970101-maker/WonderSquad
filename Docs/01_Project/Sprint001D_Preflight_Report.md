@@ -5,22 +5,29 @@
 - Sprint：Sprint001D
 - 目标：Third Person Camera
 - 检查日期：2026-08-01
+- 最终验收日期：2026-08-02
 - Unity 基线：`6000.3.21f1`
-- 实际检查分支：`develop`
-- 工作区状态：检查开始时干净
+- 首次预检分支：`develop`
+- 实施前复核分支：`feature/sprint001d-camera-follow`
+- 工作区状态：实施开始前干净；当前改动仅包含 Sprint001D 范围
 - 本次范围：只做实施前静态检查，不修改 Unity 代码、Prefab、Scene、Package 或配置
-- 最终结论：**CONDITIONAL GO**
+- 最终结论：**PASSED**
 
 ## 2. 结论摘要
 
 Sprint001A～C 已提供稳定的本地玩家生成、设备无关输入、CharacterController 移动、朝向、接地与重力基础。Sprint001C 的 Unity 实测结果为 EditMode `32 Passed / 0 Failed`、PlayMode `13 Passed / 0 Failed`，人工验收也已通过，因此 Character Foundation 已满足相机接入前提。
 
-当前不能直接开始实现，原因不是 Character Foundation 缺陷，而是以下两项实施前条件尚未完成：
+首次预检不能直接开始实现，原因不是 Character Foundation 缺陷，而是以下两项实施前条件尚未完成：
 
 1. 当前实际分支为 `develop`。按照 `CONTRIBUTING.md` 与 `BRANCH_STRATEGY.md`，实现应从最新 `develop` 创建独立 feature 分支，不应直接写入 `develop`。
 2. 项目当前没有安装 Cinemachine，而治理规范禁止引入未确认的第三方插件或 SDK。虽然 Cinemachine 是 Unity 官方包，仍需在实现前确认采用它，并锁定包版本。
 
-解除上述条件后可以进入 Sprint001D，无需先重构 Player Spawn、PlayerInputReader 或 PlayerMovement。
+实施前复核已确认上述两项条件全部解决：
+
+1. 已切换到 `feature/sprint001d-camera-follow`，没有在 `develop` 或 `main` 实施。
+2. 已由 Unity Package Manager 解析并锁定 `com.unity.cinemachine` `3.1.7`；未发现旧 Cinemachine 版本，未升级其他直接依赖。
+
+因此可以实施 Sprint001D，无需先重构 Player Spawn、PlayerInputReader 或 PlayerMovement。
 
 ## 3. 检查结果
 
@@ -322,6 +329,37 @@ Player
 
 ## 6. 最终结论
 
-**CONDITIONAL GO**
+**PASSED**
 
-Character Foundation 已满足接入条件，不需要先重构。完成“建立独立 feature 分支”和“批准并锁定 Cinemachine 版本”两项条件后，可以开始 Sprint001D；在此之前不得修改 Unity Camera 业务代码、Player Prefab 或 PlayerSandbox。
+Character Foundation 已满足接入条件，不需要先重构。“建立独立 feature 分支”和“批准并锁定 Cinemachine 版本”两项实施前条件均已解决，实施门禁已解除。
+
+Sprint001D 已完成实现、自动化验证和 Unity `6000.3.21f1` 人工验收：EditMode `37 Passed / 0 Failed`、PlayMode `19 Passed / 0 Failed`；相机跟随、固定斜俯视、停止稳定性、墙体、门洞、高低差、Canopy 与单 Main Camera 检查均通过，Console Error 为 0。全部前置条件和最终验收条件已关闭。
+
+## 7. 条件处理记录
+
+| 条件 | 处理结果 | 证据 |
+|---|---|---|
+| 不在 `develop` 或 `main` 实施 | 已解决 | 当前分支为 `feature/sprint001d-camera-follow` |
+| Cinemachine 获得明确批准 | 已解决 | Sprint 指令明确指定 Cinemachine `3.1.7` |
+| manifest 精确锁定 | 已解决 | `com.unity.cinemachine: 3.1.7` |
+| packages-lock 解析一致 | 已解决 | 直接依赖版本 `3.1.7`、depth `0` |
+| 不升级无关包 | 已解决 | 其他直接包版本未变化；只新增 Cinemachine 所需传递依赖 |
+| 独立 Camera 程序集 | 已解决 | 新增 `WonderSquad.Camera`，只引用 Core、Player、Unity.Cinemachine |
+| 无反向程序集引用 | 已解决 | Player 与其他 Gameplay 程序集均不引用 `WonderSquad.Camera` |
+| 自动化回归 | 已解决 | EditMode 37/37、PlayMode 19/19 |
+| 人工 PlayerSandbox 验收 | 已解决 | Unity `6000.3.21f1` 实测通过，Console Error 为 0 |
+
+## 8. 最终人工验收记录
+
+| 验收项 | 结果 |
+|---|---|
+| WASD 移动时 Camera 平滑跟随 | 通过 |
+| 固定斜俯视方向 | 通过 |
+| Player 旋转不触发 Camera 自由环绕 | 通过 |
+| 玩家停止后 Camera 稳定 | 通过 |
+| 墙体测试 | 通过 |
+| 门洞测试 | 通过 |
+| 高低差测试 | 通过 |
+| Canopy 测试 | 通过 |
+| Main Camera 数量 | 通过 |
+| Console Error | `0` |

@@ -4,7 +4,9 @@
   "references": [
     "WonderSquad.Core",
     "WonderSquad.Bootstrap",
+    "WonderSquad.Camera",
     "WonderSquad.Player",
+    "Unity.Cinemachine",
     "Unity.InputSystem",
     "Unity.InputSystem.TestFramework"
   ],

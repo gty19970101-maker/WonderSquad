@@ -3,8 +3,10 @@
   "rootNamespace": "WonderSquad.Tests.EditMode",
   "references": [
     "WonderSquad.Core",
+    "WonderSquad.Camera",
     "WonderSquad.Editor",
     "WonderSquad.Player",
+    "Unity.Cinemachine",
     "Unity.InputSystem"
   ],
   "includePlatforms": [
