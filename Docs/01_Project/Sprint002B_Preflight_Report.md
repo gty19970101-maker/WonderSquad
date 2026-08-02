@@ -4,16 +4,17 @@
 
 - 检查日期：2026-08-02
 - Unity 基线：`6000.3.21f1`
-- 当前分支：`feature/sprint002a-interaction-detection`
-- 当前提交：`f6e017f`
-- 工作区：检查开始时干净
+- 实施分支：`feature/sprint002b-interaction-prompt`
+- 实施基线提交：`972dc44`（`v0.4-interaction-detection`，与检查时的 `develop` 一致）
+- 工作区：实施开始时仅包含已批准的 `Sprint002B_Implementation_Plan.md`，无未归属的 Unity 业务改动
 - Sprint002A：`PASSED`，Gate Review 为 `GO`
 - Sprint002B 目标：检测到有效目标后展示本地交互提示，不执行交互
-- 最终结论：**CONDITIONAL GO**
+- Preflight 最终结论：**GO**
+- Sprint002B 实施后验收：**PASSED**
 
-现有 Interaction Detection、Input Actions、UI 程序集和 PlayerSandbox 足以承载 Sprint002B，不需要重构 Sprint002A。开始实现前必须先把 Sprint002A 合并到最新 `develop`，再创建 Sprint002B 专用分支；同时确认并直接锁定本阶段实际使用的 Unity UI 文本依赖。关闭第 12 节条件后可以实施。
+现有 Interaction Detection、Input Actions、UI 程序集和 PlayerSandbox 足以承载 Sprint002B，不需要重构 Sprint002A。第 12 节的分支、基线与 UI 依赖条件均已关闭：实施在专用分支上进行，`com.unity.ugui` 已直接锁定为 `2.0.0`，并选用其 `UnityEngine.UI.Text` 组件。
 
-本次只完成静态预检和设计决策，没有修改 Unity 代码、Prefab、Scene、Input Actions 或包配置。
+本报告保留原始预检决策，并在实施完成后补记条件关闭证据。Sprint002B 当前实现状态仍以 Implementation Report 为准，不能仅凭 Preflight `GO` 视为 Unity 验收通过。
 
 ## 2. 当前基础检查
 
@@ -447,7 +448,7 @@ Sprint002B 禁止：
 
 ## 12. 开始实现前必须关闭的条件
 
-### 阻塞条件
+### 原阻塞条件
 
 1. Sprint002A 当前提交 `f6e017f` 尚未合并到 `develop`；当前分支比 `develop` 超前 1 个提交。
 2. 必须先完成 Sprint002A 的 Review/Merge，再从最新 `develop` 创建并切换到 `feature/sprint002b-interaction-prompt`。
@@ -465,8 +466,20 @@ Sprint002B 禁止：
    - 不读取按键执行状态，不实现移动端。
    - 目标变化通知是实例事件，不是全局事件总线。
 
+### 条件关闭结果
+
+| 条件 | 结果 | 证据 |
+|---|---|---|
+| Sprint002A 基线 | 已关闭 | `972dc44` 同时是 `v0.4-interaction-detection` 与检查时的 `develop` |
+| 专用分支 | 已关闭 | `feature/sprint002b-interaction-prompt`，不是 `main` 或 `develop` |
+| 工作区范围 | 已关闭 | 实施前仅有已批准计划；当前改动经范围扫描均属于 Prompt、测试、场景验证、包锁定或文档 |
+| uGUI 文本组件 | 已关闭 | 使用 `UnityEngine.UI.Text`，未引入 TextMeshPro |
+| uGUI 版本 | 已关闭 | `manifest.json` 与 `packages-lock.json` 均精确为 `2.0.0` |
+| Input Actions | 已关闭 | 复用现有 `Gameplay/Interact`，未修改 Input Actions 资产 |
+| 只读边界 | 已关闭 | 未修改 `IInteractable`，未增加 Executor 或输入执行路径 |
+
 ## 13. 最终状态
 
-# CONDITIONAL GO
+# GO
 
-架构与现有基础满足 Sprint002B。关闭第 12 节分支、工作区和 UI 文本依赖条件后，可以开始 Interaction Prompt 实现；当前不得开始写 Sprint002B 代码。
+Sprint002B 实施前条件已经关闭并已完成实施。后续 Unity `6000.3.21f1` 真实验证结果为：Sprint002B EditMode `11/11`、Sprint002B PlayMode `11/11`、完整 EditMode `55/55`、完整 PlayMode `37/37`，全部 `0 Failed`；PlayerSandbox 人工验收、Console Error `0` 和稳定帧无持续 Prompt `GC.Alloc` 均通过。Sprint002B 最终实施状态为 `PASSED`，进入下一阶段前仍以独立 Gate Review 结论为准。

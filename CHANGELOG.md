@@ -20,6 +20,8 @@
 - PlayerSandbox 的 Camera Rig、CameraValidationRoot，以及玩家生成、销毁、重新生成、跟随稳定性、固定朝向和单相机约束测试。
 - Sprint002A Interaction Detection：Core 只读 `IInteractable` 契约、稳定目标 ID、非分配范围查询、距离/Layer/射线遮挡验证及确定性目标选择。
 - 数据化 `InteractionSettings`、`Interactable` Layer、Player 检测锚点、PlayerSandbox 临时测试目标，以及对应 EditMode/PlayMode 测试。
+- Sprint002B Interaction Prompt：不可变 Prompt 数据、静态 Prompt Definition/Source、目标变化 Presenter、只显示的 uGUI View，以及键鼠/手柄 Binding 显示缓存。
+- PlayerSandbox 的只读 Prompt 验证 UI、双目标切换环境，以及覆盖显示、隐藏、遮挡、生命周期、设备切换、只读行为和稳定帧分配的 EditMode/PlayMode 测试。
 
 ### Changed
 
@@ -27,6 +29,8 @@
 - Sprint001-C Character Controller Movement 已通过 Unity `6000.3.21f1` 最终验收：WASD、停止、转向、斜向限速、重力、接地、禁用与重新启用均正常，Console Error 为 0；EditMode 32/32、PlayMode 13/13 通过。
 - Sprint001-D Controlled Third-Person Camera 已通过 Unity `6000.3.21f1` 最终验收：EditMode 37/37、PlayMode 19/19 通过；WASD 跟随、固定斜俯视、停止稳定性、墙体、门洞、高低差、Canopy 与单 Main Camera 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
 - Sprint002A Interaction Detection 已通过 Unity `6000.3.21f1` 最终验收：EditMode 44/44、PlayMode 26/26 通过；范围检测、清除、遮挡恢复、Layer、Trigger 与 Character Foundation 人工回归均正常，Console Error 为 0，最终状态为 `PASSED`。
+- 将已解析的 `com.unity.ugui` `2.0.0` 提升为 manifest 直接依赖，未修改其他 Package 版本。
+- Sprint002B Interaction Prompt 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 11/11、完整 EditMode 55/55、完整 PlayMode 37/37 均通过；Prompt 生命周期、遮挡恢复、多目标切换、键鼠/手柄 Binding、只读交互、WASD/Camera 回归与稳定帧 GC 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
 
 ### Fixed
 

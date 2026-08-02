@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using WonderSquad.Core.Contracts.Interaction;
 using WonderSquad.Core.Logging;
@@ -30,6 +31,8 @@ namespace WonderSquad.Interaction.Detection
         private InteractionTargetId[] processedTargetIds;
         private IInteractable currentTarget;
         private bool hasReportedBufferSaturation;
+
+        public event Action<IInteractable> CurrentTargetChanged;
 
         public Transform DetectionOrigin => detectionOrigin;
 
@@ -274,14 +277,19 @@ namespace WonderSquad.Interaction.Detection
 
         private void SetCurrentTarget(IInteractable target)
         {
+            if (ReferenceEquals(currentTarget, target))
+            {
+                return;
+            }
+
             currentTarget = target;
             currentTargetComponent = target as MonoBehaviour;
+            CurrentTargetChanged?.Invoke(CurrentTarget);
         }
 
         private void ClearCurrentTarget()
         {
-            currentTarget = null;
-            currentTargetComponent = null;
+            SetCurrentTarget(null);
         }
 
         private static bool IsAlive(IInteractable target)

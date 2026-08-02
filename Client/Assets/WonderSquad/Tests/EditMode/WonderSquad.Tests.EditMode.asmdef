@@ -7,8 +7,10 @@
     "WonderSquad.Editor",
     "WonderSquad.Interaction",
     "WonderSquad.Player",
+    "WonderSquad.UI",
     "Unity.Cinemachine",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "UnityEngine.UI"
   ],
   "includePlatforms": [
     "Editor"

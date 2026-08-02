@@ -1,7 +1,12 @@
 {
   "name": "WonderSquad.UI",
   "rootNamespace": "WonderSquad.UI",
-  "references": ["WonderSquad.Core"],
+  "references": [
+    "WonderSquad.Core",
+    "WonderSquad.Interaction",
+    "WonderSquad.Player",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
   "autoReferenced": true
 }
-
