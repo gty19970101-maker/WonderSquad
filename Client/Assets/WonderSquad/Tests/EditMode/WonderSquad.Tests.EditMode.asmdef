@@ -5,6 +5,7 @@
     "WonderSquad.Core",
     "WonderSquad.Camera",
     "WonderSquad.Editor",
+    "WonderSquad.Interaction",
     "WonderSquad.Player",
     "Unity.Cinemachine",
     "Unity.InputSystem"

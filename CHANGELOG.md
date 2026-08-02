@@ -18,16 +18,20 @@
 - Player Prefab 的 CharacterController、GroundDetector、PlayerMovement 与 MovementSettings 配置，以及对应 EditMode、PlayMode 测试。
 - Sprint001-D Controlled Third-Person Camera：基于 Cinemachine `3.1.7` 的固定斜俯视跟随、独立 Camera Target、运行时本地玩家绑定和数据化相机参数。
 - PlayerSandbox 的 Camera Rig、CameraValidationRoot，以及玩家生成、销毁、重新生成、跟随稳定性、固定朝向和单相机约束测试。
+- Sprint002A Interaction Detection：Core 只读 `IInteractable` 契约、稳定目标 ID、非分配范围查询、距离/Layer/射线遮挡验证及确定性目标选择。
+- 数据化 `InteractionSettings`、`Interactable` Layer、Player 检测锚点、PlayerSandbox 临时测试目标，以及对应 EditMode/PlayMode 测试。
 
 ### Changed
 
 - Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
 - Sprint001-C Character Controller Movement 已通过 Unity `6000.3.21f1` 最终验收：WASD、停止、转向、斜向限速、重力、接地、禁用与重新启用均正常，Console Error 为 0；EditMode 32/32、PlayMode 13/13 通过。
 - Sprint001-D Controlled Third-Person Camera 已通过 Unity `6000.3.21f1` 最终验收：EditMode 37/37、PlayMode 19/19 通过；WASD 跟随、固定斜俯视、停止稳定性、墙体、门洞、高低差、Canopy 与单 Main Camera 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
+- Sprint002A Interaction Detection 已通过 Unity `6000.3.21f1` 最终验收：EditMode 44/44、PlayMode 26/26 通过；范围检测、清除、遮挡恢复、Layer、Trigger 与 Character Foundation 人工回归均正常，Console Error 为 0，最终状态为 `PASSED`。
 
 ### Fixed
 
 - 使用 `FormerlySerializedAs("spawnOnStart")` 将 `PlayerSpawner` 的序列化布尔字段安全迁移为 `shouldSpawnOnStart`，保留原默认值、运行逻辑及 Unity 资产中的序列化值，并关闭 Sprint001 Gate 命名门禁项。
+- 修复 `OccludedTarget_IsNotDetectedAndRecoversWhenClear` 与 PlayerSandbox 既有 `P0_VisibleMarker` Collider 重叠造成的测试隔离问题；仅调整测试射线路径，未修改 Interaction Detection 生产逻辑。
 
 ## [v0.1-P0] - 2026-08-01
 
