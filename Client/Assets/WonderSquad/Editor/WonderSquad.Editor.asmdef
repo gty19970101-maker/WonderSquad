@@ -2,7 +2,10 @@
   "name": "WonderSquad.Editor",
   "rootNamespace": "WonderSquad.Editor",
   "references": [
+    "WonderSquad.Content",
     "WonderSquad.Core",
+    "WonderSquad.Interaction",
+    "WonderSquad.Puzzle",
     "Unity.InputSystem",
     "Unity.RenderPipelines.Universal.Runtime"
   ],

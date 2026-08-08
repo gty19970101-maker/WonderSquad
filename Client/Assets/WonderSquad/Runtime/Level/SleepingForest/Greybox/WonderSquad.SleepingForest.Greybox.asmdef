@@ -1,0 +1,16 @@
+{
+  "name": "WonderSquad.SleepingForest.Greybox",
+  "rootNamespace": "WonderSquad.Level.SleepingForest.Greybox",
+  "references": [
+    "WonderSquad.Player"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

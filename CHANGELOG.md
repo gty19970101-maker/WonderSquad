@@ -26,8 +26,15 @@
 - PlayerSandbox ExecutionProbe，以及覆盖单次按压、长按抑制、释放重置、距离、Layer、遮挡、销毁、组件生命周期和 Prompt 只读边界的 EditMode/PlayMode 测试。
 - Sprint002D Standard Interaction Probe：新增组合式 `PF_InteractionProbe` 参考模板，由 InteractionTarget、Prompt Source、双态执行行为和最小视觉状态组件构成；不引入通用交互基类、正式机关或网络逻辑。
 - PlayerSandbox 中新增标准 Probe 参考实例，以及覆盖双态切换、请求结果、Prefab 完整性、Prompt、长按抑制、遮挡、销毁和 Player/Camera 回归的专项 EditMode/PlayMode 测试。
+- Sprint003A《沉睡森林》正式 Greybox：独立 Gameplay Scene、Spawn/Observation/Beacon/Main Route/Root Bridge/Recovery/End 空间、可确认重建的 Editor Builder 与专项测试。
+- Sprint003A 场景局部 `SleepingForestFallRecovery`：通过显式 PlayerSpawner 和 RecoveryPoint 引用，在玩家跌出灰盒后恢复至安全地面；不建立通用 Respawn 或 Checkpoint Framework。
+- Sprint003B Forest Signal Trial：新增只读 Beacon Definition、Scene 实例级 Trial、A→B 顺序状态、IncorrectOrder 恢复、确定性 Revision、只读 Snapshot 与实例事件。
+- Sprint003B Forest Beacon 组合内容：复用现有 Detection、Prompt 与 Execution 契约，新增独立 Beacon 执行适配、MaterialPropertyBlock 视觉和显式 Unity authoring 命令；不修改 Interaction/Character Foundation。
+- Sprint003B EditMode/PlayMode 测试：覆盖正确顺序、错序恢复、重复请求、Scene 来源验证、双实例视觉隔离、Prompt/Input 链路和 Sprint003A 边界回归。
 
 ### Changed
+
+- Sprint003B Forest Signal Trial 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode `18/18`、专项 PlayMode `4/4`、完整 EditMode `100/100`、完整 PlayMode `54/54` 均通过，Console Error 为 `0`。A → B、IncorrectOrder 恢复、重复保护、双 Beacon 视觉隔离与 Sprint003A/002 回归均正常，最终状态为 `PASSED / GO`。
 
 - Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
 - Sprint001-C Character Controller Movement 已通过 Unity `6000.3.21f1` 最终验收：WASD、停止、转向、斜向限速、重力、接地、禁用与重新启用均正常，Console Error 为 0；EditMode 32/32、PlayMode 13/13 通过。
@@ -37,9 +44,17 @@
 - Sprint002B Interaction Prompt 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 11/11、完整 EditMode 55/55、完整 PlayMode 37/37 均通过；Prompt 生命周期、遮挡恢复、多目标切换、键鼠/手柄 Binding、只读交互、WASD/Camera 回归与稳定帧 GC 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
 - Sprint002C Interaction Execution 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 7/7、完整 EditMode 66/66、完整 PlayMode 44/44 均通过；ExecutionProbe、单次按压、长按抑制、释放重置、无目标、超距、遮挡、目标销毁、Prompt/Execution 一致性及 Movement/Camera/Prompt 回归均正常，Console Error 为 0，最终状态为 `PASSED`。
 - Sprint002D Standard Interaction Probe 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 8/8、完整 EditMode 74/74、专项 PlayMode 8/8、完整 PlayMode 47/47 均通过；双 Probe 独立检测、Prompt、执行、双态切换、长按抑制、范围/遮挡拒绝与 Character Foundation 回归均正常，Console Error 为 0，最终状态为 `PASSED`。
+- Sprint003A Sleeping Forest Greybox 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 8/8、专项 PlayMode 3/3、完整 EditMode 82/82、完整 PlayMode 50/50 均通过；正式场景走通、跌落恢复、单 Player、单 Main Camera、Camera Follow、接地和几何人工检查正常，Console Error 为 0，最终状态为 `PASSED / GO`。
+- Sprint003A 保留 Main Route 与 Advantage Route Reserved 均可物理抵达终点的 Greybox 结构；路线差异、Beacon 状态和 Gameplay 阻挡留待 Sprint003B/003C。
+- Sprint003A 的“正式 Scene 不含 InteractionTarget”边界测试调整为仅允许两个稳定 ID 的 Forest Beacon，同时继续禁止 Test Probe、Sandbox、Root Bridge Gameplay 与 Completion Gameplay。
 
 ### Fixed
 
+- Sprint003B targeted verification fix: formal Forest Signal Trial authoring now persists and validates Trial/Beacon references before enabling the hierarchy; early scene initialization no longer rejects otherwise-valid same-scene references. Unity Test Runner rerun is still required.
+
+- 修复《沉睡森林》Main Route 的 Beacon B 至 Root Bridge 横向断口、4 米窄路和抬高信标底座造成的不可通行问题；主路线改为 6 米宽、由 Beacon/Junction 平台承接的边缘终止路段，临时根桥扩宽并增加局部护栏。
+- 修复 Sleeping Forest Greybox 中 Main/Recovery/Advantage/Root Bridge 的 20 组实际 Cube 体积相交；移除统一 Y 偏移方案，Renderer 与 BoxCollider 正体积交叠回归测试通过，人工复查无 Z-fighting、卡顿或接地抖动。
+- 修复 SleepingForest Greybox 玩家离开路面后无限下落的问题；低于 `Y=-8` 时由场景局部恢复组件送回显式 `RecoveryPoint`，Character、Interaction、Camera 与 Input Foundation 保持不变。
 - Sprint002D Interaction Probe 视觉状态改用每 Renderer 的 `MaterialPropertyBlock` 覆盖颜色，避免 EditMode 调用 `Renderer.material` 生成泄漏材质、修改共享 Material 或让多个 Probe 共用视觉状态。
 - 使用 `FormerlySerializedAs("spawnOnStart")` 将 `PlayerSpawner` 的序列化布尔字段安全迁移为 `shouldSpawnOnStart`，保留原默认值、运行逻辑及 Unity 资产中的序列化值，并关闭 Sprint001 Gate 命名门禁项。
 - 修复 `OccludedTarget_IsNotDetectedAndRecoversWhenClear` 与 PlayerSandbox 既有 `P0_VisibleMarker` Collider 重叠造成的测试隔离问题；仅调整测试射线路径，未修改 Interaction Detection 生产逻辑。

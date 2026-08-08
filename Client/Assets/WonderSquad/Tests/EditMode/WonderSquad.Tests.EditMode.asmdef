@@ -3,10 +3,13 @@
   "rootNamespace": "WonderSquad.Tests.EditMode",
   "references": [
     "WonderSquad.Core",
+    "WonderSquad.Content",
     "WonderSquad.Camera",
     "WonderSquad.Editor",
     "WonderSquad.Interaction",
     "WonderSquad.Player",
+    "WonderSquad.Puzzle",
+    "WonderSquad.SleepingForest.Greybox",
     "WonderSquad.UI",
     "Unity.Cinemachine",
     "Unity.InputSystem",
