@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using WonderSquad.Core.Configuration;
 using WonderSquad.Interaction.Detection;
+using WonderSquad.Interaction.Diagnostics;
 using WonderSquad.Player.Movement;
 using WonderSquad.Player.Spawning;
 
@@ -254,6 +255,16 @@ namespace WonderSquad.Tests.PlayMode
             foreach (var target in targets)
             {
                 target.enabled = false;
+            }
+
+            var probes =
+                Object.FindObjectsByType<InteractionExecutionProbe>(
+                    FindObjectsInactive.Include,
+                    FindObjectsSortMode.None);
+
+            foreach (var probe in probes)
+            {
+                probe.enabled = false;
             }
         }
 

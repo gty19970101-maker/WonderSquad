@@ -1892,13 +1892,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2010000010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ac6d69ece8546a095f113d61b7075f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 620f1ab0e3194b4e9fd9084a9d80dc1f, type: 3}
   m_Name:
-  m_EditorClassIdentifier: WonderSquad.Interaction::WonderSquad.Interaction.Detection.InteractionTarget
+  m_EditorClassIdentifier: WonderSquad.Interaction::WonderSquad.Interaction.Diagnostics.InteractionExecutionProbe
   targetId: interaction.sandbox.near_target
   detectionAnchor: {fileID: 2010000011}
   shouldAllowDetection: 1
+  shouldAllowExecution: 1
   detectionPriority: 0
+  configuredResultCode: 1
+  placeholderRenderer: {fileID: 2010000012}
+  idleColor: {r: 1, g: 1, b: 1, a: 1}
+  executedColor: {r: 0.2, g: 1, b: 0.3, a: 1}
 --- !u!114 &2010000016
 MonoBehaviour:
   m_ObjectHideFlags: 0

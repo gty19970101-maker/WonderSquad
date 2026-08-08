@@ -22,6 +22,8 @@
 - 数据化 `InteractionSettings`、`Interactable` Layer、Player 检测锚点、PlayerSandbox 临时测试目标，以及对应 EditMode/PlayMode 测试。
 - Sprint002B Interaction Prompt：不可变 Prompt 数据、静态 Prompt Definition/Source、目标变化 Presenter、只显示的 uGUI View，以及键鼠/手柄 Binding 显示缓存。
 - PlayerSandbox 的只读 Prompt 验证 UI、双目标切换环境，以及覆盖显示、隐藏、遮挡、生命周期、设备切换、只读行为和稳定帧分配的 EditMode/PlayMode 测试。
+- Sprint002C Interaction Execution：独立 `IExecutableInteraction` 契约、稳定 PlayerId/RequestId、不可变 Context/Request/Result、独立 Interact 输入读取、本地请求端口、执行前重新验证与 RequestId 去重。
+- PlayerSandbox ExecutionProbe，以及覆盖单次按压、长按抑制、释放重置、距离、Layer、遮挡、销毁、组件生命周期和 Prompt 只读边界的 EditMode/PlayMode 测试。
 
 ### Changed
 
@@ -31,6 +33,7 @@
 - Sprint002A Interaction Detection 已通过 Unity `6000.3.21f1` 最终验收：EditMode 44/44、PlayMode 26/26 通过；范围检测、清除、遮挡恢复、Layer、Trigger 与 Character Foundation 人工回归均正常，Console Error 为 0，最终状态为 `PASSED`。
 - 将已解析的 `com.unity.ugui` `2.0.0` 提升为 manifest 直接依赖，未修改其他 Package 版本。
 - Sprint002B Interaction Prompt 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 11/11、完整 EditMode 55/55、完整 PlayMode 37/37 均通过；Prompt 生命周期、遮挡恢复、多目标切换、键鼠/手柄 Binding、只读交互、WASD/Camera 回归与稳定帧 GC 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
+- Sprint002C Interaction Execution 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 7/7、完整 EditMode 66/66、完整 PlayMode 44/44 均通过；ExecutionProbe、单次按压、长按抑制、释放重置、无目标、超距、遮挡、目标销毁、Prompt/Execution 一致性及 Movement/Camera/Prompt 回归均正常，Console Error 为 0，最终状态为 `PASSED`。
 
 ### Fixed
 
