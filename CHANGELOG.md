@@ -24,6 +24,8 @@
 - PlayerSandbox 的只读 Prompt 验证 UI、双目标切换环境，以及覆盖显示、隐藏、遮挡、生命周期、设备切换、只读行为和稳定帧分配的 EditMode/PlayMode 测试。
 - Sprint002C Interaction Execution：独立 `IExecutableInteraction` 契约、稳定 PlayerId/RequestId、不可变 Context/Request/Result、独立 Interact 输入读取、本地请求端口、执行前重新验证与 RequestId 去重。
 - PlayerSandbox ExecutionProbe，以及覆盖单次按压、长按抑制、释放重置、距离、Layer、遮挡、销毁、组件生命周期和 Prompt 只读边界的 EditMode/PlayMode 测试。
+- Sprint002D Standard Interaction Probe：新增组合式 `PF_InteractionProbe` 参考模板，由 InteractionTarget、Prompt Source、双态执行行为和最小视觉状态组件构成；不引入通用交互基类、正式机关或网络逻辑。
+- PlayerSandbox 中新增标准 Probe 参考实例，以及覆盖双态切换、请求结果、Prefab 完整性、Prompt、长按抑制、遮挡、销毁和 Player/Camera 回归的专项 EditMode/PlayMode 测试。
 
 ### Changed
 
@@ -34,9 +36,11 @@
 - 将已解析的 `com.unity.ugui` `2.0.0` 提升为 manifest 直接依赖，未修改其他 Package 版本。
 - Sprint002B Interaction Prompt 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 11/11、完整 EditMode 55/55、完整 PlayMode 37/37 均通过；Prompt 生命周期、遮挡恢复、多目标切换、键鼠/手柄 Binding、只读交互、WASD/Camera 回归与稳定帧 GC 人工检查均正常，Console Error 为 0，最终状态为 `PASSED`。
 - Sprint002C Interaction Execution 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 11/11、专项 PlayMode 7/7、完整 EditMode 66/66、完整 PlayMode 44/44 均通过；ExecutionProbe、单次按压、长按抑制、释放重置、无目标、超距、遮挡、目标销毁、Prompt/Execution 一致性及 Movement/Camera/Prompt 回归均正常，Console Error 为 0，最终状态为 `PASSED`。
+- Sprint002D Standard Interaction Probe 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode 8/8、完整 EditMode 74/74、专项 PlayMode 8/8、完整 PlayMode 47/47 均通过；双 Probe 独立检测、Prompt、执行、双态切换、长按抑制、范围/遮挡拒绝与 Character Foundation 回归均正常，Console Error 为 0，最终状态为 `PASSED`。
 
 ### Fixed
 
+- Sprint002D Interaction Probe 视觉状态改用每 Renderer 的 `MaterialPropertyBlock` 覆盖颜色，避免 EditMode 调用 `Renderer.material` 生成泄漏材质、修改共享 Material 或让多个 Probe 共用视觉状态。
 - 使用 `FormerlySerializedAs("spawnOnStart")` 将 `PlayerSpawner` 的序列化布尔字段安全迁移为 `shouldSpawnOnStart`，保留原默认值、运行逻辑及 Unity 资产中的序列化值，并关闭 Sprint001 Gate 命名门禁项。
 - 修复 `OccludedTarget_IsNotDetectedAndRecoversWhenClear` 与 PlayerSandbox 既有 `P0_VisibleMarker` Collider 重叠造成的测试隔离问题；仅调整测试射线路径，未修改 Interaction Detection 生产逻辑。
 

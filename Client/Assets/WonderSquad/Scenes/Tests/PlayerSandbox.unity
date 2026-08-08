@@ -2075,6 +2075,35 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ab284d3255544f680eb1d0a19bf6018, type: 3}
+--- !u!1001 &2030000000
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 310000000000000001, guid: 4df6b1e0a8c74d3f8e2f4b9c1d3e4f05, type: 3}
+      propertyPath: m_Name
+      value: InteractionProbe_Reference
+      objectReference: {fileID: 0}
+    - target: {fileID: 310000000000000002, guid: 4df6b1e0a8c74d3f8e2f4b9c1d3e4f05, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 310000000000000002, guid: 4df6b1e0a8c74d3f8e2f4b9c1d3e4f05, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 310000000000000002, guid: 4df6b1e0a8c74d3f8e2f4b9c1d3e4f05, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4df6b1e0a8c74d3f8e2f4b9c1d3e4f05, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2084,3 +2113,4 @@ SceneRoots:
   - {fileID: 904757347}
   - {fileID: 2010000001}
   - {fileID: 2020000000}
+  - {fileID: 2030000000}
