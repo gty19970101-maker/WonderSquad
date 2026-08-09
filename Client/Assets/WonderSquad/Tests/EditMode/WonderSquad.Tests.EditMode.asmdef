@@ -9,6 +9,7 @@
     "WonderSquad.Interaction",
     "WonderSquad.Player",
     "WonderSquad.Puzzle",
+    "WonderSquad.SleepingForest",
     "WonderSquad.SleepingForest.Greybox",
     "WonderSquad.UI",
     "Unity.Cinemachine",

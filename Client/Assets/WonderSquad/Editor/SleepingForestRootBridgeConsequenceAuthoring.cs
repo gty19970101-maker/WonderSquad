@@ -28,23 +28,37 @@ namespace WonderSquad.Editor
             "Assets/WonderSquad/Art/Materials/Greybox/M_SF_Greybox_Beacon.mat";
         private const string GameplayRootName =
             "ForestSignalRouteConsequence";
-        private const string StartJunctionName =
-            "RootBridgeAdvantageStartJunction";
-        private const string ExitJunctionName =
-            "RootBridgeAdvantageExitJunction";
+        private const string MainBridgeName =
+            "RootBridgeTemporaryCrossing";
+        private const string MainRouteOuterLegName =
+            "RootBridgeMainRouteOuterLeg";
+        private const string MainRouteReturnName =
+            "RootBridgeMainRouteReturn";
+        private const string ObsoleteWestGuardrailName =
+            "Boundary_RootBridgeWestGuardrail";
+        private const string ObsoleteEastGuardrailName =
+            "Boundary_RootBridgeEastGuardrail";
+        private const string ObsoleteLeftRootName =
+            "RootBridgeLandmark_LeftRoot";
+        private const string ObsoleteRightRootName =
+            "RootBridgeLandmark_RightRoot";
 
-        private static readonly Vector3 StartJunctionPosition =
-            new Vector3(-5f, -0.5f, 23f);
-        private static readonly Vector3 StartJunctionScale =
-            new Vector3(2f, 1f, 8f);
+        private static readonly Vector3 MainBridgePosition =
+            new Vector3(8.5f, -0.5f, 23f);
+        private static readonly Vector3 MainBridgeScale =
+            new Vector3(9f, 1f, 6f);
+        private static readonly Vector3 MainRouteOuterLegPosition =
+            new Vector3(16f, -0.5f, 34f);
+        private static readonly Vector3 MainRouteOuterLegScale =
+            new Vector3(6f, 1f, 22f);
+        private static readonly Vector3 MainRouteReturnPosition =
+            new Vector3(11.5f, -0.5f, 45f);
+        private static readonly Vector3 MainRouteReturnScale =
+            new Vector3(3f, 1f, 6f);
         private static readonly Vector3 SpanPosition =
-            new Vector3(-5f, -0.5f, 34.5f);
+            new Vector3(0f, -0.5f, 35f);
         private static readonly Vector3 SpanScale =
-            new Vector3(2f, 1f, 15f);
-        private static readonly Vector3 ExitJunctionPosition =
-            new Vector3(-7f, -0.5f, 42.5f);
-        private static readonly Vector3 ExitJunctionScale =
-            new Vector3(6f, 1f, 1f);
+            new Vector3(3f, 1f, 16f);
         private static readonly Color ActivatedColor =
             new Color(0.35f, 1f, 0.45f, 1f);
         private static readonly Color DormantColor =
@@ -66,8 +80,11 @@ namespace WonderSquad.Editor
                     "Apply Sprint003C Root Bridge Consequence?",
                     "This explicit command will create or update only the " +
                     "RootBridgeAdvantageSpan Prefab and its SleepingForest " +
-                    "scene composition. RootBridgeTemporaryCrossing, Player, " +
-                    "Camera, FallRecovery and Interaction Foundation are not changed.",
+                    "scene composition. The permanent RootBridgeTemporaryCrossing " +
+                    "is arranged as the first leg of an always-open outer Main " +
+                    "Route. Obsolete guardrails and decorative Root Bridge " +
+                    "bars are removed; Player, Camera, FallRecovery and " +
+                    "Interaction Foundation are not changed.",
                     "Apply",
                     "Cancel"))
             {
@@ -101,6 +118,52 @@ namespace WonderSquad.Editor
         private static bool ValidateApplyFromMenu()
         {
             return !EditorApplication.isPlayingOrWillChangePlaymode;
+        }
+
+        public static void ApplyForBatchValidation()
+        {
+            if (!Application.isBatchMode)
+            {
+                throw new InvalidOperationException(
+                    "Batch validation authoring may only run in Unity batch mode.");
+            }
+
+            ApplyContent();
+        }
+
+        public static void AuditVisibleGeometryForBatchValidation()
+        {
+            if (!Application.isBatchMode)
+            {
+                throw new InvalidOperationException(
+                    "Batch geometry audit may only run in Unity batch mode.");
+            }
+
+            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            var auditBounds = new Bounds(
+                new Vector3(0f, 2f, 38f),
+                new Vector3(40f, 20f, 40f));
+            foreach (var root in scene.GetRootGameObjects())
+            {
+                foreach (var gameObject in GetHierarchyObjects(root))
+                {
+                    if (!gameObject.TryGetComponent<MeshRenderer>(out var renderer) ||
+                        !gameObject.TryGetComponent<MeshFilter>(out _) ||
+                        !gameObject.TryGetComponent<BoxCollider>(out var collider) ||
+                        !renderer.bounds.Intersects(auditBounds))
+                    {
+                        continue;
+                    }
+
+                    Debug.Log(
+                        $"[Sprint003C Geometry Audit] Path={GetHierarchyPath(gameObject.transform)}; " +
+                        $"Position={gameObject.transform.position}; " +
+                        $"Rotation={gameObject.transform.rotation.eulerAngles}; " +
+                        $"Scale={gameObject.transform.lossyScale}; " +
+                        $"RendererBounds={renderer.bounds}; " +
+                        $"ColliderBounds={GetConfiguredBounds(collider)}");
+                }
+            }
         }
 
         private static void ApplyContent()
@@ -198,14 +261,22 @@ namespace WonderSquad.Editor
             }
 
             var trial = FindSingleComponent<ForestSignalTrial>(scene);
-            var mainBridge = FindSceneObject(scene, "RootBridgeTemporaryCrossing");
+            var mainBridge = FindSceneObject(scene, MainBridgeName);
             var entrance = FindSceneObject(scene, "RootBridgeEntranceJunction");
             var sliceEnd = FindSceneObject(scene, "SliceEndGround");
-            if (trial == null || mainBridge == null || entrance == null || sliceEnd == null)
+            if (trial == null || mainBridge == null || entrance == null ||
+                sliceEnd == null)
             {
                 throw new InvalidOperationException(
                     "SleepingForest is missing approved Sprint003A/003B scene references.");
             }
+
+            mainBridge.transform.position = MainBridgePosition;
+            mainBridge.transform.localScale = MainBridgeScale;
+            DestroySceneObject(scene, ObsoleteWestGuardrailName);
+            DestroySceneObject(scene, ObsoleteEastGuardrailName);
+            DestroySceneObject(scene, ObsoleteLeftRootName);
+            DestroySceneObject(scene, ObsoleteRightRootName);
 
             DestroySceneObject(scene, GameplayRootName);
             var root = new GameObject(GameplayRootName);
@@ -220,18 +291,19 @@ namespace WonderSquad.Editor
                     "Root Bridge greybox material is missing.");
             }
 
-            CreateCube(
-                StartJunctionName,
+            var outerLeg = CreateCube(
+                MainRouteOuterLegName,
                 root.transform,
-                StartJunctionPosition,
-                StartJunctionScale,
+                MainRouteOuterLegPosition,
+                MainRouteOuterLegScale,
                 bridgeMaterial);
-            CreateCube(
-                ExitJunctionName,
+            var returnLeg = CreateCube(
+                MainRouteReturnName,
                 root.transform,
-                ExitJunctionPosition,
-                ExitJunctionScale,
+                MainRouteReturnPosition,
+                MainRouteReturnScale,
                 bridgeMaterial);
+
             var spanObject = PrefabUtility.InstantiatePrefab(prefab, scene) as GameObject;
             if (spanObject == null)
             {
@@ -263,15 +335,16 @@ namespace WonderSquad.Editor
 
             spanObject.SetActive(true);
             root.SetActive(true);
+            Physics.SyncTransforms();
             ValidateSceneConfiguration(
                 scene,
                 consequence,
                 span,
                 mainBridge,
+                outerLeg,
+                returnLeg,
                 entrance,
-                sliceEnd,
-                FindSceneObject(scene, StartJunctionName),
-                FindSceneObject(scene, ExitJunctionName));
+                sliceEnd);
         }
 
         private static void ValidateSceneConfiguration(
@@ -279,29 +352,133 @@ namespace WonderSquad.Editor
             SleepingForestRootBridgeConsequence consequence,
             RootBridgeAdvantageSpan span,
             GameObject mainBridge,
+            GameObject outerLeg,
+            GameObject returnLeg,
             GameObject entrance,
-            GameObject sliceEnd,
-            GameObject startJunction,
-            GameObject exitJunction)
+            GameObject sliceEnd)
         {
             if (consequence == null || span == null ||
                 !consequence.HasValidConfiguration ||
                 consequence.Trial == null ||
-                mainBridge == null || entrance == null || sliceEnd == null ||
-                startJunction == null || exitJunction == null ||
+                mainBridge == null || outerLeg == null || returnLeg == null ||
+                entrance == null || sliceEnd == null ||
                 !IsInScene(scene, consequence.gameObject) ||
                 !IsInScene(scene, span.gameObject) ||
+                FindSceneObject(scene, ObsoleteWestGuardrailName) != null ||
+                FindSceneObject(scene, ObsoleteEastGuardrailName) != null ||
+                FindSceneObject(scene, ObsoleteLeftRootName) != null ||
+                FindSceneObject(scene, ObsoleteRightRootName) != null ||
                 !HasValidGeometryAudit(
                     span.GroundRenderer.gameObject,
-                    startJunction,
-                    exitJunction,
                     entrance,
                     mainBridge,
+                    outerLeg,
+                    returnLeg,
+                    sliceEnd) ||
+                !HasWalkableConnection(entrance, mainBridge) ||
+                !HasWalkableConnection(mainBridge, outerLeg) ||
+                !HasWalkableConnection(outerLeg, returnLeg) ||
+                !HasWalkableConnection(returnLeg, sliceEnd) ||
+                !HasWalkableConnection(entrance, span.GroundRenderer.gameObject) ||
+                !HasWalkableConnection(span.GroundRenderer.gameObject, sliceEnd) ||
+                !HasReadableRouteBenefit(
+                    entrance,
+                    mainBridge,
+                    outerLeg,
+                    returnLeg,
+                    span.GroundRenderer.gameObject,
                     sliceEnd))
             {
                 throw new InvalidOperationException(
                     "Sprint003C Root Bridge scene configuration failed validation.");
             }
+        }
+
+        private static bool HasWalkableConnection(GameObject from, GameObject to)
+        {
+            const float minimumConnectionWidth = 1.5f;
+            const float edgeTolerance = 0.001f;
+            var fromBounds = GetConfiguredBounds(from.GetComponent<BoxCollider>());
+            var toBounds = GetConfiguredBounds(to.GetComponent<BoxCollider>());
+            var overlapX = Mathf.Min(fromBounds.max.x, toBounds.max.x) -
+                           Mathf.Max(fromBounds.min.x, toBounds.min.x);
+            var overlapZ = Mathf.Min(fromBounds.max.z, toBounds.max.z) -
+                           Mathf.Max(fromBounds.min.z, toBounds.min.z);
+            var touchesOnX =
+                Mathf.Abs(fromBounds.max.x - toBounds.min.x) <= edgeTolerance ||
+                Mathf.Abs(toBounds.max.x - fromBounds.min.x) <= edgeTolerance;
+            var touchesOnZ =
+                Mathf.Abs(fromBounds.max.z - toBounds.min.z) <= edgeTolerance ||
+                Mathf.Abs(toBounds.max.z - fromBounds.min.z) <= edgeTolerance;
+            var hasConnection =
+                touchesOnX && overlapZ >= minimumConnectionWidth ||
+                touchesOnZ && overlapX >= minimumConnectionWidth;
+            if (!hasConnection)
+            {
+                Debug.LogError(
+                    $"Invalid route connection: {from.name} {fromBounds} -> " +
+                    $"{to.name} {toBounds}; overlap X {overlapX}, " +
+                    $"overlap Z {overlapZ}.");
+            }
+
+            return hasConnection;
+        }
+
+        private static bool HasReadableRouteBenefit(
+            GameObject routeStart,
+            GameObject mainBridge,
+            GameObject outerLeg,
+            GameObject returnLeg,
+            GameObject advantageSpan,
+            GameObject routeEnd)
+        {
+            const float maximumAdvantageRatio = 0.65f;
+            const float minimumParallelSeparation = 10f;
+            var start = routeStart.transform.position;
+            var end = routeEnd.transform.position;
+            var mainLength = CalculatePolylineLength(
+                start,
+                mainBridge.transform.position,
+                outerLeg.transform.position,
+                returnLeg.transform.position,
+                end);
+            var advantageLength = CalculatePolylineLength(
+                start,
+                advantageSpan.transform.position,
+                end);
+            var mainBounds = GetConfiguredBounds(
+                mainBridge.GetComponent<BoxCollider>());
+            var outerBounds = GetConfiguredBounds(
+                outerLeg.GetComponent<BoxCollider>());
+            var advantageBounds = GetConfiguredBounds(
+                advantageSpan.GetComponent<BoxCollider>());
+            var parallelSeparation = outerBounds.min.x - advantageBounds.max.x;
+            var hasBenefit = advantageLength <= mainLength * maximumAdvantageRatio;
+            var hasSpatialSeparation =
+                mainBounds.size.x > mainBounds.size.z &&
+                advantageBounds.size.z > advantageBounds.size.x &&
+                parallelSeparation >= minimumParallelSeparation;
+            if (!hasBenefit || !hasSpatialSeparation)
+            {
+                Debug.LogError(
+                    $"Advantage route length {advantageLength} must be no more " +
+                    $"than {maximumAdvantageRatio:P0} of Main Route length " +
+                    $"{mainLength}; parallel separation is " +
+                    $"{parallelSeparation}.");
+            }
+
+            return hasBenefit && hasSpatialSeparation;
+        }
+
+        private static float CalculatePolylineLength(params Vector3[] points)
+        {
+            var length = 0f;
+            for (var index = 1; index < points.Length; index++)
+            {
+                length += Vector3.Distance(points[index - 1], points[index]);
+            }
+
+            return length;
         }
 
         private static bool HasValidGeometryAudit(
@@ -314,6 +491,9 @@ namespace WonderSquad.Editor
                 var firstCollider = firstObject.GetComponent<BoxCollider>();
                 if (firstRenderer == null || firstCollider == null)
                 {
+                    Debug.LogError(
+                        $"Geometry audit requires Renderer and BoxCollider: " +
+                        firstObject.name);
                     return false;
                 }
 
@@ -329,9 +509,14 @@ namespace WonderSquad.Editor
                             firstRenderer.bounds,
                             secondRenderer.bounds) ||
                         !IsNoPositiveVolumeOverlap(
-                            firstCollider.bounds,
-                            secondCollider.bounds))
+                            GetConfiguredBounds(firstCollider),
+                            GetConfiguredBounds(secondCollider)))
                     {
+                        Debug.LogError(
+                            $"Geometry overlap or missing component: " +
+                            $"{firstObject.name} {firstRenderer.bounds} / " +
+                            $"{secondObject.name} " +
+                            $"{(secondRenderer == null ? default : secondRenderer.bounds)}.");
                         return false;
                     }
                 }
@@ -345,6 +530,18 @@ namespace WonderSquad.Editor
             return !(first.min.x < second.max.x && first.max.x > second.min.x &&
                      first.min.y < second.max.y && first.max.y > second.min.y &&
                      first.min.z < second.max.z && first.max.z > second.min.z);
+        }
+
+        private static Bounds GetConfiguredBounds(BoxCollider collider)
+        {
+            var scale = collider.transform.lossyScale;
+            var absoluteScale = new Vector3(
+                Mathf.Abs(scale.x),
+                Mathf.Abs(scale.y),
+                Mathf.Abs(scale.z));
+            return new Bounds(
+                collider.transform.TransformPoint(collider.center),
+                Vector3.Scale(collider.size, absoluteScale));
         }
 
         private static GameObject CreateCube(
@@ -412,6 +609,18 @@ namespace WonderSquad.Editor
             {
                 yield return transform.gameObject;
             }
+        }
+
+        private static string GetHierarchyPath(Transform transform)
+        {
+            var path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = transform.name + "/" + path;
+            }
+
+            return path;
         }
 
         private static bool IsInScene(Scene scene, GameObject gameObject)

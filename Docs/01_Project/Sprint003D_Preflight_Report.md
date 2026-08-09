@@ -777,3 +777,34 @@ Completed → 离开 End → 再进入 → 不重复提交/创建反馈
 # CONDITIONAL GO
 
 Sprint003D 技术与玩法设计可实施；剩余条件仅为 Sprint003C 基线文档和版本治理收口。完成这两项后无需重新设计 Completion，可以直接进入 Sprint003D Implementation Plan。
+
+---
+
+## 24. Gate Closure Record
+
+本节追加于原始 `CONDITIONAL GO` 之后，用于保留完整审计历史。原始结论、两个条件及当时的风险判断均不删除、不改写。
+
+### 24.1 原始实施前条件
+
+1. 使用最终 Unity 测试结果完成 Sprint003C 文档收尾并生成 `Sprint003C_Gate_Review.md`；
+2. 将 Sprint003C 改动固定为可追踪的稳定 Git 基线，使 Sprint003D diff 可独立审计。
+
+### 24.2 条件关闭证据
+
+| 条件 | 状态 | 关闭证据 |
+|---|---|---|
+| Sprint003C 最终测试与 Gate Review | `CLOSED` | `Sprint003C_Gate_Review.md` 最终结论为 `GO`，Sprint003C 状态为 `PASSED / GO`；专项 EditMode `8/8`、专项 PlayMode `4/4`、完整 EditMode `108/108`、完整 PlayMode `58/58` 均通过，Console Error `0` |
+| Sprint003C 可追踪 Git 基线 | `CLOSED` | Branch：`feature/sprint003-gameplay-vertical-slice`；Commit：`e1c15e4 feat(level): complete Sprint003C root bridge consequence`；HEAD 与 `origin/feature/sprint003-gameplay-vertical-slice` 均为 `e1c15e4c31c34ef723a8ff7f4770c484e7dd79fc`；关闭审计时 working tree clean |
+
+### 24.3 Sprint003C Gate 结果
+
+- Gate Review：`GO`
+- 最终状态：`PASSED / GO`
+- Foundation 边界：保持
+- Sprint003D Completion：未提前实现
+
+### 24.4 当前实施准入状态
+
+# GO — CONDITIONS CLOSED
+
+原始两个 `CONDITIONAL GO` 条件已全部关闭。Sprint003D 可以进入 Implementation Plan；本记录不授权跳过 Plan 或直接开始 Runtime/Scene Implementation。

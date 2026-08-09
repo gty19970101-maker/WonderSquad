@@ -19,6 +19,7 @@ namespace WonderSquad.Tests.PlayMode
             "Assets/WonderSquad/Scenes/Gameplay/SleepingForest/SleepingForest.unity";
         private const string CleanupSceneName =
             "SleepingForestRootBridgeConsequenceCleanup";
+        private const float MaximumAdvantageRouteRatio = 0.65f;
 
         [UnityTest]
         public IEnumerator SleepingForest_InitialStateKeepsMainRouteAndSpanInactive()
@@ -133,6 +134,55 @@ namespace WonderSquad.Tests.PlayMode
                 Has.Length.EqualTo(1));
         }
 
+        [UnityTest]
+        public IEnumerator SleepingForest_ActivatedAdvantageRouteIsIndependentAndShorter()
+        {
+            yield return LoadSleepingForest();
+
+            var consequence = Object.FindFirstObjectByType<
+                SleepingForestRootBridgeConsequence>();
+            var trial = Object.FindFirstObjectByType<ForestSignalTrial>();
+            var entrance = FindSceneObject("RootBridgeEntranceJunction");
+            var mainBridge = FindSceneObject("RootBridgeTemporaryCrossing");
+            var outerLeg = FindSceneObject("RootBridgeMainRouteOuterLeg");
+            var returnLeg = FindSceneObject("RootBridgeMainRouteReturn");
+            var sliceEnd = FindSceneObject("SliceEndGround");
+
+            Execute(trial.BeaconA, 1U);
+            Execute(trial.BeaconB, 2U);
+            yield return null;
+
+            var mainBounds = mainBridge.GetComponent<BoxCollider>().bounds;
+            var outerBounds = outerLeg.GetComponent<BoxCollider>().bounds;
+            var returnBounds = returnLeg.GetComponent<BoxCollider>().bounds;
+            var advantageBounds = consequence.AdvantageSpan.GroundCollider.bounds;
+            var mainLength = CalculatePolylineLength(
+                entrance.transform.position,
+                mainBridge.transform.position,
+                outerLeg.transform.position,
+                returnLeg.transform.position,
+                sliceEnd.transform.position);
+            var advantageLength = CalculatePolylineLength(
+                entrance.transform.position,
+                consequence.AdvantageSpan.transform.position,
+                sliceEnd.transform.position);
+
+            Assert.That(consequence.AdvantageSpan.GroundCollider.enabled, Is.True);
+            Assert.That(HasPositiveVolumeOverlap(mainBounds, advantageBounds), Is.False);
+            Assert.That(HasPositiveVolumeOverlap(outerBounds, advantageBounds), Is.False);
+            Assert.That(HasPositiveVolumeOverlap(returnBounds, advantageBounds), Is.False);
+            Assert.That(
+                advantageLength,
+                Is.LessThanOrEqualTo(mainLength * MaximumAdvantageRouteRatio));
+            Assert.That(mainBridge.GetComponent<BoxCollider>().enabled, Is.True);
+            Assert.That(outerLeg.GetComponent<BoxCollider>().enabled, Is.True);
+            Assert.That(returnLeg.GetComponent<BoxCollider>().enabled, Is.True);
+            Assert.That(FindSceneObject("Boundary_RootBridgeWestGuardrail"), Is.Null);
+            Assert.That(FindSceneObject("Boundary_RootBridgeEastGuardrail"), Is.Null);
+            Assert.That(FindSceneObject("RootBridgeLandmark_LeftRoot"), Is.Null);
+            Assert.That(FindSceneObject("RootBridgeLandmark_RightRoot"), Is.Null);
+        }
+
         private static IEnumerator LoadSleepingForest()
         {
             var operation = EditorSceneManager.LoadSceneAsyncInPlayMode(
@@ -157,6 +207,24 @@ namespace WonderSquad.Tests.PlayMode
                 Vector3.zero,
                 Vector3.forward));
             Assert.That(result.Code, Is.EqualTo(InteractionResultCode.Success));
+        }
+
+        private static bool HasPositiveVolumeOverlap(Bounds first, Bounds second)
+        {
+            return first.min.x < second.max.x && first.max.x > second.min.x &&
+                   first.min.y < second.max.y && first.max.y > second.min.y &&
+                   first.min.z < second.max.z && first.max.z > second.min.z;
+        }
+
+        private static float CalculatePolylineLength(params Vector3[] points)
+        {
+            var length = 0f;
+            for (var index = 1; index < points.Length; index++)
+            {
+                length += Vector3.Distance(points[index - 1], points[index]);
+            }
+
+            return length;
         }
 
         private static GameObject FindSceneObject(string name)

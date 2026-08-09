@@ -31,11 +31,19 @@
 - Sprint003B Forest Signal Trial：新增只读 Beacon Definition、Scene 实例级 Trial、A→B 顺序状态、IncorrectOrder 恢复、确定性 Revision、只读 Snapshot 与实例事件。
 - Sprint003B Forest Beacon 组合内容：复用现有 Detection、Prompt 与 Execution 契约，新增独立 Beacon 执行适配、MaterialPropertyBlock 视觉和显式 Unity authoring 命令；不修改 Interaction/Character Foundation。
 - Sprint003B EditMode/PlayMode 测试：覆盖正确顺序、错序恢复、重复请求、Scene 来源验证、双实例视觉隔离、Prompt/Input 链路和 Sprint003A 边界回归。
-- Sprint003C Root Bridge Advantage / Environment Consequence：新增只读 Trial Snapshot 消费组件、独立 `RootBridgeAdvantageSpan` 与实例级 MaterialPropertyBlock 视觉；主桥保持静态、安全且始终可通行。
+- Sprint003C Root Bridge Advantage / Environment Consequence：新增只读 Trial Snapshot 消费组件、独立 `RootBridgeAdvantageSpan` 与实例级 MaterialPropertyBlock 视觉；永久主桥保持安全且始终可通行。
+- Sprint003D Sleeping Forest Slice Completion：新增场景局部双条件 Completion Controller、正式 Player Slice End Trigger、readonly Snapshot/Revision 边界，以及不阻挡输入的 Requirement/Completion uGUI 反馈与无 Collider 世界 Marker。
+- Sprint003D 显式幂等 Authoring 与专项测试：生成唯一 Completion 组合和 `PF_SleepingForestCompletionFeedback`，覆盖 Trial-first、Player-first、IncorrectOrder 恢复、重复触发、Player 身份、UI 生命周期和 Foundation 回归。
 
 ### Changed
 
-- Sprint003C 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode `8/8`、专项 PlayMode `4/4`、完整 EditMode `108/108`、完整 PlayMode `58/58` 均通过，Console Error 为 `0`。Main Route 永久可用，Advantage Route 形成可选捷径，IncorrectOrder 可恢复，Revision 消费幂等，最终状态为 `PASSED / GO`。
+- Sprint003D 已通过 Unity `6000.3.21f1` 正式验收：Sprint003C/003D 专项及完整 EditMode/PlayMode 全部 Passed、`0 Failed`、`0 Skipped`，Console Error `0`；仓库未保存本次 Test Runner XML，精确数量标记为 `TEST COUNT REQUIRES MANUAL RECORD`，不复用旧计数。A—G Completion 流程、Main/Advantage Route、IncorrectOrder、FallRecovery 与反馈闭环均通过，最终状态为 `PASSED / GO — VERTICAL SLICE COMPLETE`。
+
+- Sprint003C 原 Unity 验收基线为专项 EditMode `8/8`、专项 PlayMode `4/4`、完整 EditMode `108/108`、完整 PlayMode `58/58`；Sprint003D 人工走图随后发现旧 Advantage Span 与永久主桥职责近似重合，该 `PASSED / GO` 已由定向空间修复状态取代。
+- Sprint003C 第一轮空间分离虽通过自动测试，但正式 Unity 复验确认 `32.06m` 对 `27.00m` 的两条路线仍长距离并排，旧 Guardrail 也成为无意义长条；该布局已被路线可读性修复取代。
+- Sprint003C Advantage Route 可读性修复曾在隔离 Unity `6000.3.21f1` 通过专项 EditMode `9/9`、专项 PlayMode `5/5`、完整 EditMode `122/122`、完整 PlayMode `63/63`。永久 Main Route 改为约 `46.24m` 的三段折线绕行，Advantage Route 保持 `27.00m` 直连并跳过完整外侧长段和两次转向；这些计数是最终可见 Geometry 清理前的历史记录。
+- Sprint003C 可见 Geometry 精确清理定位并删除了 `SleepingForestRoot/Landmarks/RootBridgeLandmark_LeftRoot` 与 `RootBridgeLandmark_RightRoot`；二者是 003A Builder 独立创建、上一轮 003C Authoring 明确保留的装饰 Cube，并非已删除 Guardrail。Builder、Authoring、正式 Scene 和走廊回归测试已同步；其待验证状态随后由正式 Unity 验收关闭。
+- Sprint003C Visible Geometry Cleanup 已通过正式 Unity 人工复验：废弃 Root Landmark 不再存在，重复 Apply 不恢复对象，无空气墙、隐形 Collider、Z-fighting 或接地抖动；`46.24m` Main Route 与 `27.00m` Advantage Route 均正常，结论为 `SPRINT003C VISIBLE GEOMETRY CLEANUP — VERIFIED`。
 - Sprint003B Forest Signal Trial 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode `18/18`、专项 PlayMode `4/4`、完整 EditMode `100/100`、完整 PlayMode `54/54` 均通过，Console Error 为 `0`。A → B、IncorrectOrder 恢复、重复保护、双 Beacon 视觉隔离与 Sprint003A/002 回归均正常，最终状态为 `PASSED / GO`。
 
 - Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
@@ -51,6 +59,9 @@
 - Sprint003A 的“正式 Scene 不含 InteractionTarget”边界测试调整为仅允许两个稳定 ID 的 Forest Beacon，同时继续禁止 Test Probe、Sandbox、Root Bridge Gameplay 与 Completion Gameplay。
 
 ### Fixed
+
+- 修复 Sprint003C 路线可读性：删除悬空/堵路的两条旧 Guardrail，将永久主路重排为东向、外侧北向、折返 Slice End 的三段安全路径；绿色 Span 在 Completed 后直连入口与终点。Authoring、Prefab、Scene、003A/003C Bounds 和路线连续性测试已同步，未修改 Completion 或 Foundation。
+- 修复 Sprint003C 绿色捷径两侧仍可见的两条棕色长条：精确删除无 Gameplay 职责的 `RootBridgeLandmark_LeftRoot` / `RightRoot` 及其 BoxCollider，移除 003A Builder 创建源，并在 003C Authoring 中加入精确、幂等的旧 Scene 清理；不改变 Main/Advantage 路线、Completion 或 Foundation。
 
 - 修复 Sprint003C EditMode Test 中 `System.Object` 与 `UnityEngine.Object` 的 `CS0104` 命名歧义；Unity API 调用显式限定为 `UnityEngine.Object`，未改变测试逻辑。
 - 修复 Root Bridge Span/Visual 首次状态同步可能被 enum 默认值跳过的问题；生命周期显式应用 Initial 状态，保持 Renderer、Collider 与 Marker 一致。

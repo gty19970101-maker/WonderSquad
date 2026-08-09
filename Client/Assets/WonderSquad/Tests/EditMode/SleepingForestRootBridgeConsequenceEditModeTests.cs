@@ -15,6 +15,9 @@ namespace WonderSquad.Tests.EditMode
     {
         private const string SleepingForestScenePath =
             "Assets/WonderSquad/Scenes/Gameplay/SleepingForest/SleepingForest.unity";
+        private const float MaximumAdvantageRouteRatio = 0.65f;
+        private const float MinimumConnectionWidth = 1.5f;
+        private const float MinimumParallelSeparation = 10f;
 
         private BridgeFixture fixture;
 
@@ -174,8 +177,8 @@ namespace WonderSquad.Tests.EditMode
                 Is.False);
             Assert.That(
                 HasPositiveVolumeOverlap(
-                    fixture.Span.GroundCollider.bounds,
-                    fixture.MainBridgeCollider.bounds),
+                    GetConfiguredBounds(fixture.Span.GroundCollider),
+                    GetConfiguredBounds(fixture.MainBridgeCollider)),
                 Is.False);
         }
 
@@ -205,10 +208,160 @@ namespace WonderSquad.Tests.EditMode
                 Assert.That(spans[0].GroundRenderer.enabled, Is.False);
                 Assert.That(spans[0].GroundCollider.enabled, Is.False);
                 Assert.That(
+                    FindSceneObject("Boundary_RootBridgeWestGuardrail"),
+                    Is.Null);
+                Assert.That(
+                    FindSceneObject("Boundary_RootBridgeEastGuardrail"),
+                    Is.Null);
+                Assert.That(
+                    FindSceneObject("RootBridgeLandmark_LeftRoot"),
+                    Is.Null);
+                Assert.That(
+                    FindSceneObject("RootBridgeLandmark_RightRoot"),
+                    Is.Null);
+                Assert.That(
                     HasPositiveVolumeOverlap(
-                        spans[0].GroundCollider.bounds,
-                        mainBridge.GetComponent<BoxCollider>().bounds),
+                        GetConfiguredBounds(spans[0].GroundCollider),
+                        GetConfiguredBounds(mainBridge.GetComponent<BoxCollider>())),
                     Is.False);
+            }
+            finally
+            {
+                EditorSceneManager.NewScene(
+                    NewSceneSetup.EmptyScene,
+                    NewSceneMode.Single);
+            }
+        }
+
+        [Test]
+        public void SleepingForestScene_AdvantageRouteIsIndependentAndShorter()
+        {
+            EditorSceneManager.OpenScene(
+                SleepingForestScenePath,
+                OpenSceneMode.Single);
+            try
+            {
+                var entrance = FindSceneObject("RootBridgeEntranceJunction");
+                var mainBridge = FindSceneObject("RootBridgeTemporaryCrossing");
+                var outerLeg = FindSceneObject("RootBridgeMainRouteOuterLeg");
+                var returnLeg = FindSceneObject("RootBridgeMainRouteReturn");
+                var sliceEnd = FindSceneObject("SliceEndGround");
+                var span = UnityEngine.Object.FindFirstObjectByType<
+                    RootBridgeAdvantageSpan>(FindObjectsInactive.Include);
+
+                Assert.That(entrance, Is.Not.Null);
+                Assert.That(mainBridge, Is.Not.Null);
+                Assert.That(outerLeg, Is.Not.Null);
+                Assert.That(returnLeg, Is.Not.Null);
+                Assert.That(sliceEnd, Is.Not.Null);
+                Assert.That(span, Is.Not.Null);
+
+                var mainBounds = GetConfiguredBounds(
+                    mainBridge.GetComponent<BoxCollider>());
+                var outerBounds = GetConfiguredBounds(
+                    outerLeg.GetComponent<BoxCollider>());
+                var returnBounds = GetConfiguredBounds(
+                    returnLeg.GetComponent<BoxCollider>());
+                var advantageBounds = GetConfiguredBounds(span.GroundCollider);
+                var entranceBounds = GetConfiguredBounds(
+                    entrance.GetComponent<BoxCollider>());
+                var endBounds = GetConfiguredBounds(
+                    sliceEnd.GetComponent<BoxCollider>());
+
+                AssertNoPositiveVolumeOverlap(
+                    entranceBounds,
+                    mainBounds,
+                    outerBounds,
+                    returnBounds,
+                    advantageBounds,
+                    endBounds);
+                AssertWalkableConnection(
+                    entranceBounds,
+                    mainBounds);
+                AssertWalkableConnection(
+                    mainBounds,
+                    outerBounds);
+                AssertWalkableConnection(outerBounds, returnBounds);
+                AssertWalkableConnection(returnBounds, endBounds);
+                AssertWalkableConnection(
+                    entranceBounds,
+                    advantageBounds);
+                AssertWalkableConnection(advantageBounds, endBounds);
+
+                Assert.That(mainBounds.size.x, Is.GreaterThan(mainBounds.size.z));
+                Assert.That(
+                    advantageBounds.size.z,
+                    Is.GreaterThan(advantageBounds.size.x));
+                Assert.That(
+                    outerBounds.min.x - advantageBounds.max.x,
+                    Is.GreaterThanOrEqualTo(MinimumParallelSeparation));
+
+                var mainLength = CalculatePolylineLength(
+                    entrance.transform.position,
+                    mainBridge.transform.position,
+                    outerLeg.transform.position,
+                    returnLeg.transform.position,
+                    sliceEnd.transform.position);
+                var advantageLength = CalculatePolylineLength(
+                    entrance.transform.position,
+                    span.transform.position,
+                    sliceEnd.transform.position);
+                Assert.That(
+                    advantageLength,
+                    Is.LessThanOrEqualTo(mainLength * MaximumAdvantageRouteRatio));
+            }
+            finally
+            {
+                EditorSceneManager.NewScene(
+                    NewSceneSetup.EmptyScene,
+                    NewSceneMode.Single);
+            }
+        }
+
+        [Test]
+        public void SleepingForestScene_AdvantageCorridorHasNoObsoleteLargeCube()
+        {
+            EditorSceneManager.OpenScene(
+                SleepingForestScenePath,
+                OpenSceneMode.Single);
+            try
+            {
+                var span = UnityEngine.Object.FindFirstObjectByType<
+                    RootBridgeAdvantageSpan>(FindObjectsInactive.Include);
+                Assert.That(span, Is.Not.Null);
+                Assert.That(
+                    FindSceneObject("RootBridgeLandmark_LeftRoot"),
+                    Is.Null);
+                Assert.That(
+                    FindSceneObject("RootBridgeLandmark_RightRoot"),
+                    Is.Null);
+
+                var cleanCorridor = new Bounds(
+                    new Vector3(0f, 1.5f, 35f),
+                    new Vector3(14f, 6f, 16f));
+                var approvedGround = span.GroundCollider.gameObject;
+                foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
+                {
+                    foreach (var transform in root.GetComponentsInChildren<Transform>(true))
+                    {
+                        var gameObject = transform.gameObject;
+                        if (gameObject == approvedGround ||
+                            !gameObject.TryGetComponent<MeshRenderer>(out _) ||
+                            !gameObject.TryGetComponent<MeshFilter>(out _) ||
+                            !gameObject.TryGetComponent<BoxCollider>(out var collider))
+                        {
+                            continue;
+                        }
+
+                        Assert.That(
+                            HasPositiveVolumeOverlap(
+                                cleanCorridor,
+                                GetConfiguredBounds(collider)),
+                            Is.False,
+                            $"Unapproved visible/collidable geometry in " +
+                            $"Advantage corridor: {GetHierarchyPath(transform)}");
+                    }
+                }
             }
             finally
             {
@@ -225,6 +378,67 @@ namespace WonderSquad.Tests.EditMode
                    first.min.z < second.max.z && first.max.z > second.min.z;
         }
 
+        private static void AssertWalkableConnection(Bounds from, Bounds to)
+        {
+            const float edgeTolerance = 0.001f;
+            var overlapX = Mathf.Min(from.max.x, to.max.x) -
+                           Mathf.Max(from.min.x, to.min.x);
+            var overlapZ = Mathf.Min(from.max.z, to.max.z) -
+                           Mathf.Max(from.min.z, to.min.z);
+            var touchesOnX =
+                Mathf.Abs(from.max.x - to.min.x) <= edgeTolerance ||
+                Mathf.Abs(to.max.x - from.min.x) <= edgeTolerance;
+            var touchesOnZ =
+                Mathf.Abs(from.max.z - to.min.z) <= edgeTolerance ||
+                Mathf.Abs(to.max.z - from.min.z) <= edgeTolerance;
+            Assert.That(
+                touchesOnX && overlapZ >= MinimumConnectionWidth ||
+                touchesOnZ && overlapX >= MinimumConnectionWidth,
+                Is.True);
+        }
+
+        private static void AssertNoPositiveVolumeOverlap(params Bounds[] bounds)
+        {
+            for (var firstIndex = 0; firstIndex < bounds.Length; firstIndex++)
+            {
+                for (var secondIndex = firstIndex + 1;
+                     secondIndex < bounds.Length;
+                     secondIndex++)
+                {
+                    Assert.That(
+                        HasPositiveVolumeOverlap(
+                            bounds[firstIndex],
+                            bounds[secondIndex]),
+                        Is.False);
+                }
+            }
+        }
+
+        private static Bounds GetConfiguredBounds(Collider collider)
+        {
+            var boxCollider = collider as BoxCollider;
+            Assert.That(boxCollider, Is.Not.Null);
+            var scale = boxCollider.transform.lossyScale;
+            var absoluteScale = new Vector3(
+                Mathf.Abs(scale.x),
+                Mathf.Abs(scale.y),
+                Mathf.Abs(scale.z));
+            return new Bounds(
+                boxCollider.transform.TransformPoint(boxCollider.center),
+                Vector3.Scale(boxCollider.size, absoluteScale));
+        }
+
+        private static float CalculatePolylineLength(params Vector3[] points)
+        {
+            var length = 0f;
+            for (var index = 1; index < points.Length; index++)
+            {
+                length += Vector3.Distance(points[index - 1], points[index]);
+            }
+
+            return length;
+        }
+
         private static GameObject FindSceneObject(string name)
         {
             foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
@@ -239,6 +453,18 @@ namespace WonderSquad.Tests.EditMode
             }
 
             return null;
+        }
+
+        private static string GetHierarchyPath(Transform transform)
+        {
+            var path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = transform.name + "/" + path;
+            }
+
+            return path;
         }
 
         private sealed class BridgeFixture : IDisposable
@@ -274,16 +500,16 @@ namespace WonderSquad.Tests.EditMode
 
                 MainBridge = CreateGround(
                     "RootBridgeTemporaryCrossing",
-                    new Vector3(0f, -0.5f, 35f),
-                    new Vector3(7f, 1f, 16f));
+                    new Vector3(8.5f, -0.5f, 23f),
+                    new Vector3(9f, 1f, 6f));
                 MainBridgeRenderer = MainBridge.GetComponent<Renderer>();
                 MainBridgeCollider = MainBridge.GetComponent<BoxCollider>();
 
                 var spanObject = CreateChild("RootBridgeAdvantageSpan");
                 var spanGround = CreateGround(
                     "GroundSurface",
-                    new Vector3(-5f, -0.5f, 34.5f),
-                    new Vector3(2f, 1f, 15f));
+                    new Vector3(0f, -0.5f, 35f),
+                    new Vector3(3f, 1f, 16f));
                 spanGround.transform.SetParent(spanObject.transform, true);
                 DormantMarker = CreateMarker(spanObject, "DormantMarker");
                 ActivatedMarker = CreateMarker(spanObject, "ActivatedMarker");

@@ -1,0 +1,10 @@
+{
+  "name": "WonderSquad.SleepingForest",
+  "rootNamespace": "WonderSquad.SleepingForest",
+  "references": [
+    "WonderSquad.Core",
+    "WonderSquad.Player",
+    "WonderSquad.Puzzle"
+  ],
+  "autoReferenced": true
+}

@@ -11,7 +11,9 @@ using WonderSquad.Player.Movement;
 using WonderSquad.Player.Spawning;
 using WonderSquad.Presentation.Camera;
 using WonderSquad.Puzzle.SleepingForest;
+using WonderSquad.SleepingForest.Completion;
 using WonderSquad.UI.Interaction;
+using WonderSquad.UI.SleepingForest;
 
 namespace WonderSquad.Tests.EditMode
 {
@@ -36,6 +38,8 @@ namespace WonderSquad.Tests.EditMode
             "MainRoute_BeaconBToBridge",
             "RootBridgeEntranceJunction",
             "RootBridgeTemporaryCrossing",
+            "RootBridgeMainRouteOuterLeg",
+            "RootBridgeMainRouteReturn",
             "SliceEndGround",
             "RecoveryRouteEntryJunction",
             "RecoveryRoute_OuterLoop",
@@ -47,10 +51,6 @@ namespace WonderSquad.Tests.EditMode
             "AdvantageRouteSupport",
             "AdvantageRouteHighPlatform",
             "AdvantageRouteVisibleBlocker",
-            "Boundary_RootBridgeWestGuardrail",
-            "Boundary_RootBridgeEastGuardrail",
-            "RootBridgeLandmark_LeftRoot",
-            "RootBridgeLandmark_RightRoot",
         };
 
         [Test]
@@ -106,7 +106,8 @@ namespace WonderSquad.Tests.EditMode
                 Assert.That(FindSceneObject("ForestBeacon_B"), Is.Not.Null);
                 Assert.That(FindSceneObject("MainRoute"), Is.Not.Null);
                 Assert.That(FindSceneObject("AdvantageRouteReserved"), Is.Not.Null);
-                Assert.That(FindSceneObject("RootBridgeLandmark_LeftRoot"), Is.Not.Null);
+                Assert.That(FindSceneObject("RootBridgeLandmark_LeftRoot"), Is.Null);
+                Assert.That(FindSceneObject("RootBridgeLandmark_RightRoot"), Is.Null);
                 Assert.That(FindSceneObject("RecoveryRoute"), Is.Not.Null);
                 Assert.That(FindSceneObject("SliceEndGround"), Is.Not.Null);
                 Assert.That(
@@ -161,6 +162,14 @@ namespace WonderSquad.Tests.EditMode
                     7f,
                     PlatformSurfaceY);
                 AssertWalkableRoutePart(
+                    "RootBridgeMainRouteOuterLeg",
+                    6f,
+                    PlatformSurfaceY);
+                AssertWalkableRoutePart(
+                    "RootBridgeMainRouteReturn",
+                    3f,
+                    PlatformSurfaceY);
+                AssertWalkableRoutePart(
                     "BeaconA_Reserved_Base",
                     8f,
                     PlatformSurfaceY);
@@ -194,10 +203,16 @@ namespace WonderSquad.Tests.EditMode
                     PlatformSurfaceY);
                 Assert.That(
                     FindSceneObject("Boundary_RootBridgeWestGuardrail"),
-                    Is.Not.Null);
+                    Is.Null);
                 Assert.That(
                     FindSceneObject("Boundary_RootBridgeEastGuardrail"),
-                    Is.Not.Null);
+                    Is.Null);
+                Assert.That(
+                    FindSceneObject("RootBridgeLandmark_LeftRoot"),
+                    Is.Null);
+                Assert.That(
+                    FindSceneObject("RootBridgeLandmark_RightRoot"),
+                    Is.Null);
             }
             finally
             {
@@ -307,6 +322,18 @@ namespace WonderSquad.Tests.EditMode
                 var standardProbes = Object.FindObjectsByType<InteractionProbeBehaviour>(
                     FindObjectsInactive.Include,
                     FindObjectsSortMode.None);
+                var completionControllers =
+                    Object.FindObjectsByType<SleepingForestCompletionController>(
+                        FindObjectsInactive.Include,
+                        FindObjectsSortMode.None);
+                var sliceEndTriggers =
+                    Object.FindObjectsByType<SleepingForestSliceEndTrigger>(
+                        FindObjectsInactive.Include,
+                        FindObjectsSortMode.None);
+                var completionPresenters =
+                    Object.FindObjectsByType<SleepingForestCompletionPresenter>(
+                        FindObjectsInactive.Include,
+                        FindObjectsSortMode.None);
 
                 Assert.That(names, Has.None.StartsWith("P0_"));
                 Assert.That(names, Does.Not.Contain("DebugCanvas"));
@@ -332,11 +359,25 @@ namespace WonderSquad.Tests.EditMode
                 Assert.That(beaconInteractions, Has.Length.EqualTo(2));
                 Assert.That(executionProbes, Is.Empty);
                 Assert.That(standardProbes, Is.Empty);
+                Assert.That(completionControllers, Has.Length.EqualTo(1));
+                Assert.That(
+                    completionControllers[0].HasValidConfiguration,
+                    Is.True);
+                Assert.That(sliceEndTriggers, Has.Length.EqualTo(1));
+                Assert.That(
+                    sliceEndTriggers[0].HasValidConfiguration,
+                    Is.True);
+                Assert.That(completionPresenters, Has.Length.EqualTo(1));
+                Assert.That(
+                    completionPresenters[0].HasValidConfiguration,
+                    Is.True);
                 Assert.That(
                     names.Any(name => name.Contains("RootBridgeGameplay")),
                     Is.False);
                 Assert.That(
-                    names.Any(name => name.Contains("CompletionGameplay")),
+                    names.Any(name =>
+                        name.Contains("CompletionGameplay") &&
+                        name != "SleepingForestCompletion"),
                     Is.False);
             }
             finally

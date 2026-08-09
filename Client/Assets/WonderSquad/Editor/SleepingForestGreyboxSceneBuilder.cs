@@ -553,7 +553,6 @@ namespace WonderSquad.Editor
                 new Vector3(0f, 0f, 12f),
                 materials.Beacon,
                 scene);
-            CreateRootBridgeLandmark(landmarks, new Vector3(0f, 0f, 35f), materials.Bridge, scene);
             CreateEndLandmark(landmarks, new Vector3(0f, 0f, 50f), materials.End, scene);
 
             CreateBoundary(
@@ -647,28 +646,6 @@ namespace WonderSquad.Editor
                 scene);
             var anchor = CreateEmpty(beaconName + "_InteractionAnchor_Reserved", anchors, scene);
             anchor.transform.position = position + new Vector3(0f, 0f, -3f);
-        }
-
-        private static void CreateRootBridgeLandmark(
-            Transform landmarks,
-            Vector3 position,
-            Material material,
-            Scene scene)
-        {
-            CreateCube(
-                "RootBridgeLandmark_LeftRoot",
-                landmarks,
-                position + new Vector3(-5f, 1.5f, 0f),
-                new Vector3(2f, 3f, 12f),
-                material,
-                scene);
-            CreateCube(
-                "RootBridgeLandmark_RightRoot",
-                landmarks,
-                position + new Vector3(5f, 1.5f, 0f),
-                new Vector3(2f, 3f, 12f),
-                material,
-                scene);
         }
 
         private static void CreateEndLandmark(

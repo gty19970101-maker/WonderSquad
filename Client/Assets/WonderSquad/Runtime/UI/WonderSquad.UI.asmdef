@@ -5,6 +5,7 @@
     "WonderSquad.Core",
     "WonderSquad.Interaction",
     "WonderSquad.Player",
+    "WonderSquad.SleepingForest",
     "Unity.InputSystem",
     "UnityEngine.UI"
   ],
