@@ -31,9 +31,11 @@
 - Sprint003B Forest Signal Trial：新增只读 Beacon Definition、Scene 实例级 Trial、A→B 顺序状态、IncorrectOrder 恢复、确定性 Revision、只读 Snapshot 与实例事件。
 - Sprint003B Forest Beacon 组合内容：复用现有 Detection、Prompt 与 Execution 契约，新增独立 Beacon 执行适配、MaterialPropertyBlock 视觉和显式 Unity authoring 命令；不修改 Interaction/Character Foundation。
 - Sprint003B EditMode/PlayMode 测试：覆盖正确顺序、错序恢复、重复请求、Scene 来源验证、双实例视觉隔离、Prompt/Input 链路和 Sprint003A 边界回归。
+- Sprint003C Root Bridge Advantage / Environment Consequence：新增只读 Trial Snapshot 消费组件、独立 `RootBridgeAdvantageSpan` 与实例级 MaterialPropertyBlock 视觉；主桥保持静态、安全且始终可通行。
 
 ### Changed
 
+- Sprint003C 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode `8/8`、专项 PlayMode `4/4`、完整 EditMode `108/108`、完整 PlayMode `58/58` 均通过，Console Error 为 `0`。Main Route 永久可用，Advantage Route 形成可选捷径，IncorrectOrder 可恢复，Revision 消费幂等，最终状态为 `PASSED / GO`。
 - Sprint003B Forest Signal Trial 已通过 Unity `6000.3.21f1` 最终验收：专项 EditMode `18/18`、专项 PlayMode `4/4`、完整 EditMode `100/100`、完整 PlayMode `54/54` 均通过，Console Error 为 `0`。A → B、IncorrectOrder 恢复、重复保护、双 Beacon 视觉隔离与 Sprint003A/002 回归均正常，最终状态为 `PASSED / GO`。
 
 - Sprint001-A Player Spawn 已通过 Unity `6000.3.21f1` 人工验收：PlayerSandbox、胶囊生成、出生位置、单实例和全部测试均正常，Console Error 为 0。
@@ -50,6 +52,9 @@
 
 ### Fixed
 
+- 修复 Sprint003C EditMode Test 中 `System.Object` 与 `UnityEngine.Object` 的 `CS0104` 命名歧义；Unity API 调用显式限定为 `UnityEngine.Object`，未改变测试逻辑。
+- 修复 Root Bridge Span/Visual 首次状态同步可能被 enum 默认值跳过的问题；生命周期显式应用 Initial 状态，保持 Renderer、Collider 与 Marker 一致。
+- 修复 Sprint003C EditMode Fixture 在 inactive 根对象上 Configure 导致未订阅 Trial 实例事件的问题；调整为激活 Fixture 后 Configure 并读取 Initial Snapshot。该问题仅属于测试夹具生命周期，不是 ForestSignalTrial、Revision、Beacon 或 Interaction Foundation 缺陷。
 - Sprint003B targeted verification fix: formal Forest Signal Trial authoring now persists and validates Trial/Beacon references before enabling the hierarchy; early scene initialization no longer rejects otherwise-valid same-scene references. Unity Test Runner rerun is still required.
 
 - 修复《沉睡森林》Main Route 的 Beacon B 至 Root Bridge 横向断口、4 米窄路和抬高信标底座造成的不可通行问题；主路线改为 6 米宽、由 Beacon/Junction 平台承接的边缘终止路段，临时根桥扩宽并增加局部护栏。
